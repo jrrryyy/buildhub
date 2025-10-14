@@ -4,7 +4,7 @@ session_start();
 require '../login/config.php';
 if (isset($_POST['add'])) {
     // Connect to DB
-    $conn = mysqli_connect("localhost", "root", "", "user_db");
+    $conn = mysqli_connect("localhost", "root", "", "buildhub");
 
     if (!$conn) {
         die("Database connection failed: " . mysqli_connect_error());

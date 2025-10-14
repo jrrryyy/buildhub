@@ -1,6 +1,6 @@
 <?php
 session_start();
-$conn=mysqli_connect("localhost","root","","user_db");
+$conn=mysqli_connect("localhost","root","","buildhub");
 $sql  = "SELECT * FROM products";
 $result = mysqli_query($conn, $sql);
 ?>
