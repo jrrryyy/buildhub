@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 14, 2025 at 12:25 PM
+-- Generation Time: Oct 14, 2025 at 03:53 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -29,17 +29,14 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `orders` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `order_code` varchar(32) NOT NULL,
   `buyer_id` int(10) UNSIGNED NOT NULL,
   `supplier_id` int(10) UNSIGNED NOT NULL,
   `recipient_name` varchar(100) NOT NULL,
   `address_line` varchar(255) NOT NULL,
   `province` varchar(50) DEFAULT NULL,
   `phone` varchar(20) NOT NULL,
-  `status` enum('pending','accepted','reschedule_pending','out_for_delivery','delivered','cancelled') NOT NULL DEFAULT 'pending',
-  `scheduled_at` datetime NOT NULL,
-  `delivery_fee` int(11) NOT NULL DEFAULT 0,
-  `subtotal` int(11) NOT NULL DEFAULT 0,
+  `status` enum('pending','accepted','delivered','cancelled') NOT NULL DEFAULT 'pending',
+  `scheduled_at` date NOT NULL,
   `total_amount` int(11) NOT NULL DEFAULT 0,
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
   `updated_at` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
@@ -71,7 +68,6 @@ CREATE TABLE `order_items` (
 
 CREATE TABLE `order_reschedules` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `order_id` bigint(20) UNSIGNED NOT NULL,
   `requested_by` enum('buyer','supplier') NOT NULL,
   `proposed_scheduled_at` datetime NOT NULL,
   `status` enum('pending','accepted','declined') NOT NULL DEFAULT 'pending',
@@ -131,7 +127,8 @@ CREATE TABLE `users` (
 INSERT INTO `users` (`id`, `fname`, `lname`, `email`, `password`, `role`, `created_at`, `updated_at`) VALUES
 (1, 'Jed', 'Yulo', 'sample@sample.com', 'password', 'buyer', '2025-10-14 18:14:33', '2025-10-14 18:16:16'),
 (2, 'Johann', 'Gonzales', 'sample1@sample.com', 'password', 'buyer', '2025-10-14 18:14:33', '2025-10-14 18:16:16'),
-(3, 'Ken', 'Estayo', 'sample2@sample.com', 'password', 'buyer', '2025-10-14 18:14:33', '2025-10-14 18:16:21');
+(3, 'Ken', 'Estayo', 'sample2@sample.com', 'password', 'buyer', '2025-10-14 18:14:33', '2025-10-14 18:16:21'),
+(6, '', '', '', '$2y$10$Atd0mFkKwUaCDv/jGNK2Ce9oU3Y3kqYIHp6EB2jRbyQ0odWd7yMzS', 'buyer', '2025-10-14 18:38:07', '2025-10-14 18:38:07');
 
 --
 -- Indexes for dumped tables
@@ -142,7 +139,6 @@ INSERT INTO `users` (`id`, `fname`, `lname`, `email`, `password`, `role`, `creat
 --
 ALTER TABLE `orders`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `uq_orders_code` (`order_code`),
   ADD KEY `idx_buyer` (`buyer_id`),
   ADD KEY `idx_supplier` (`supplier_id`),
   ADD KEY `idx_status` (`status`);
@@ -159,8 +155,7 @@ ALTER TABLE `order_items`
 -- Indexes for table `order_reschedules`
 --
 ALTER TABLE `order_reschedules`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `idx_order` (`order_id`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `products`
@@ -208,7 +203,7 @@ ALTER TABLE `products`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- Constraints for dumped tables
@@ -220,19 +215,6 @@ ALTER TABLE `users`
 ALTER TABLE `orders`
   ADD CONSTRAINT `fk_orders_buyer` FOREIGN KEY (`buyer_id`) REFERENCES `users` (`id`) ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_orders_supplier` FOREIGN KEY (`supplier_id`) REFERENCES `users` (`id`) ON UPDATE CASCADE;
-
---
--- Constraints for table `order_items`
---
-ALTER TABLE `order_items`
-  ADD CONSTRAINT `fk_order_items_order` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_order_items_product` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON UPDATE CASCADE;
-
---
--- Constraints for table `order_reschedules`
---
-ALTER TABLE `order_reschedules`
-  ADD CONSTRAINT `fk_resched_order` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
