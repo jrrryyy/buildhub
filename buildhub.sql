@@ -34,7 +34,7 @@ CREATE TABLE `orders` (
   `supplier_id` int(10) UNSIGNED NOT NULL,
   `recipient_name` varchar(100) NOT NULL,
   `address_line` varchar(255) NOT NULL,
-  `unit_floor` varchar(50) DEFAULT NULL,
+  `province` varchar(50) DEFAULT NULL,
   `phone` varchar(20) NOT NULL,
   `status` enum('pending','accepted','reschedule_pending','out_for_delivery','delivered','cancelled') NOT NULL DEFAULT 'pending',
   `scheduled_at` datetime NOT NULL,
