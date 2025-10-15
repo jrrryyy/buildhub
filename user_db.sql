@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 14, 2025 at 03:53 PM
+-- Generation Time: Oct 15, 2025 at 05:06 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `buildhub`
+-- Database: `user_db`
 --
 
 -- --------------------------------------------------------
@@ -49,16 +49,27 @@ CREATE TABLE `orders` (
 --
 
 CREATE TABLE `order_items` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `order_id` bigint(20) UNSIGNED NOT NULL,
-  `product_id` int(10) UNSIGNED NOT NULL,
+  `id` int(11) UNSIGNED NOT NULL,
+  `user_id` int(11) UNSIGNED NOT NULL,
+  `order_id` int(11) UNSIGNED NOT NULL,
+  `product_id` int(11) UNSIGNED NOT NULL,
   `product_name` varchar(255) NOT NULL,
+  `description` varchar(255) NOT NULL,
   `unit_price` int(11) NOT NULL,
   `quantity` int(11) NOT NULL,
+  `file` varchar(255) NOT NULL,
   `line_total` int(11) NOT NULL,
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
   `updated_at` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `order_items`
+--
+
+INSERT INTO `order_items` (`id`, `user_id`, `order_id`, `product_id`, `product_name`, `description`, `unit_price`, `quantity`, `file`, `line_total`, `created_at`, `updated_at`) VALUES
+(13, 57, 0, 0, 'chocolate', 'asdasd', 100, 100, 'umayno.jpg', 10000, '2025-10-15 20:30:42', '2025-10-15 20:30:42'),
+(14, 57, 0, 0, 'chocolate', 'dad', 100, 100, 'yeseo.jpg', 10000, '2025-10-15 20:30:56', '2025-10-15 20:30:56');
 
 -- --------------------------------------------------------
 
@@ -82,26 +93,29 @@ CREATE TABLE `order_reschedules` (
 --
 
 CREATE TABLE `products` (
-  `id` int(10) UNSIGNED NOT NULL,
+  `id` int(11) NOT NULL,
   `product_name` varchar(255) NOT NULL,
-  `description` varchar(255) DEFAULT NULL,
   `weight` int(11) NOT NULL,
-  `weight_unit` enum('g','kg','lb') NOT NULL DEFAULT 'kg',
-  `unit_label` varchar(30) NOT NULL DEFAULT 'bag',
-  `price` decimal(10,2) NOT NULL,
+  `price` int(11) NOT NULL,
   `quantity` int(11) NOT NULL,
-  `image_path` varchar(255) NOT NULL,
-  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
-  `updated_at` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+  `delivery` int(11) NOT NULL,
+  `file` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `products`
 --
 
-INSERT INTO `products` (`id`, `product_name`, `description`, `weight`, `weight_unit`, `unit_label`, `price`, `quantity`, `image_path`, `created_at`, `updated_at`) VALUES
-(1, 'Sample Coffee Beans 250g', NULL, 250, 'kg', 'bag', 320.00, 100, 'beans250.jpg', '2025-10-14 18:10:16', '2025-10-14 18:10:16'),
-(2, 'Sample Coffee Beans 1kg', NULL, 1000, 'kg', 'bag', 1100.00, 50, 'beans1kg.jpg', '2025-10-14 18:10:16', '2025-10-14 18:10:16');
+INSERT INTO `products` (`id`, `product_name`, `weight`, `price`, `quantity`, `delivery`, `file`) VALUES
+(39, 'pogi', 69, 69, 69, 0, '3 layer switch.png'),
+(42, 'asd', 234, 324, 234, 0, 'day6.mp4'),
+(43, 'asd', 234, 324, 234, 0, 'umayno.jpg'),
+(44, 'Asd', 45, 53, 554, 0, 'wp.jpg'),
+(45, '', 0, 0, 0, 0, '136134480_104490174948609_970177375971885239_n.jpg'),
+(46, 'pogi', 69, 69, 69, 22, '119037952_756511421589148_2267977214469719398_n.jp'),
+(47, '', 0, 0, 0, 0, 'wp.jpg'),
+(48, 'name', 2, 100, 2, 2, '168428271_279456313625537_7799711334461686546_n.jp'),
+(49, '', 0, 23, 0, 23, '136134480_104490174948609_970177375971885239_n.jpg');
 
 -- --------------------------------------------------------
 
@@ -110,52 +124,34 @@ INSERT INTO `products` (`id`, `product_name`, `description`, `weight`, `weight_u
 --
 
 CREATE TABLE `users` (
-  `id` int(10) UNSIGNED NOT NULL,
+  `id` int(11) UNSIGNED NOT NULL,
   `fname` varchar(255) NOT NULL,
-  `lname` varchar(255) NOT NULL,
-  `email` varchar(191) NOT NULL,
-  `password` varchar(255) NOT NULL,
-  `role` enum('buyer','supplier') NOT NULL DEFAULT 'buyer',
-  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
-  `updated_at` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+  `lname` varchar(2255) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `password` varchar(255) DEFAULT NULL,
+  `role` enum('buyer','seller') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `fname`, `lname`, `email`, `password`, `role`, `created_at`, `updated_at`) VALUES
-(1, 'Jed', 'Yulo', 'sample@sample.com', 'password', 'buyer', '2025-10-14 18:14:33', '2025-10-14 18:16:16'),
-(2, 'Johann', 'Gonzales', 'sample1@sample.com', 'password', 'buyer', '2025-10-14 18:14:33', '2025-10-14 18:16:16'),
-(3, 'Ken', 'Estayo', 'sample2@sample.com', 'password', 'buyer', '2025-10-14 18:14:33', '2025-10-14 18:16:21'),
-(6, '', '', '', '$2y$10$Atd0mFkKwUaCDv/jGNK2Ce9oU3Y3kqYIHp6EB2jRbyQ0odWd7yMzS', 'buyer', '2025-10-14 18:38:07', '2025-10-14 18:38:07');
+INSERT INTO `users` (`id`, `fname`, `lname`, `email`, `password`, `role`) VALUES
+(55, 'buyer', 'Yulo', 'seller@gmail.com', '$2y$10$dWmnuHRwGoLl/zplPOpBle9DizlCGaLMtwe5kzAMwLZgIuy2segPe', 'seller'),
+(56, 'buyer', '', 'haha@haha', '$2y$10$f7WqZLyyODKCymKl7tS..e3NenNVc/RWN2LkbROM26hrSGecdvovO', 'buyer'),
+(57, '', '', 'mama@mama', '$2y$10$0yF3VLvlsWHO/jtOGxbVqejh1IVS54GK.jKl2iM9sygRG/Nx0vJvi', 'seller'),
+(58, 'seller', '', 'jaja@jaja', '$2y$10$H0y01HNNInfnlDh5cDWX7.LZbWOMw.YK3vVjR52QBIHU8RpHd13gy', 'seller');
 
 --
 -- Indexes for dumped tables
 --
 
 --
--- Indexes for table `orders`
---
-ALTER TABLE `orders`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `idx_buyer` (`buyer_id`),
-  ADD KEY `idx_supplier` (`supplier_id`),
-  ADD KEY `idx_status` (`status`);
-
---
 -- Indexes for table `order_items`
 --
 ALTER TABLE `order_items`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `idx_order` (`order_id`),
-  ADD KEY `idx_product` (`product_id`);
-
---
--- Indexes for table `order_reschedules`
---
-ALTER TABLE `order_reschedules`
-  ADD PRIMARY KEY (`id`);
+  ADD KEY `idx_order_items_user_id` (`user_id`);
 
 --
 -- Indexes for table `products`
@@ -168,53 +164,39 @@ ALTER TABLE `products`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `email` (`email`),
-  ADD KEY `idx_role` (`role`);
+  ADD UNIQUE KEY `UNIQUE` (`email`);
 
 --
 -- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT for table `orders`
---
-ALTER TABLE `orders`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
---
 -- AUTO_INCREMENT for table `order_items`
 --
 ALTER TABLE `order_items`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
---
--- AUTO_INCREMENT for table `order_reschedules`
---
-ALTER TABLE `order_reschedules`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=59;
 
 --
 -- Constraints for dumped tables
 --
 
 --
--- Constraints for table `orders`
+-- Constraints for table `order_items`
 --
-ALTER TABLE `orders`
-  ADD CONSTRAINT `fk_orders_buyer` FOREIGN KEY (`buyer_id`) REFERENCES `users` (`id`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_orders_supplier` FOREIGN KEY (`supplier_id`) REFERENCES `users` (`id`) ON UPDATE CASCADE;
+ALTER TABLE `order_items`
+  ADD CONSTRAINT `fk_order_items_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
