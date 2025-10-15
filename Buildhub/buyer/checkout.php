@@ -31,44 +31,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body class="bg-light-gray min-h-screen font-sans flex flex-col lg:flex-row">
 
   <!-- Sidebar -->
-  <aside class="hidden lg:block w-64 bg-white border-r border-gray-200 h-screen fixed left-0 top-0">
     <?php include __DIR__ . '/../nav/sidebar_buyer.php'; ?>
-  </aside>
 
-  <!-- Mobile Sidebar Toggle -->
-  <div class="lg:hidden fixed top-0 left-0 w-full bg-white shadow z-50 flex items-center justify-between px-4 py-3">
-    <div class="flex items-center gap-2">
-      <button id="menuToggle" class="text-gray-700 focus:outline-none">
-        <!-- Hamburger Icon -->
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2"
-             viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round"
-                d="M4 6h16M4 12h16M4 18h16"></path>
-        </svg>
-      </button>
-      <span class="font-semibold text-gray-800 text-lg">Checkout</span>
-    </div>
-  </div>
 
-  <!-- Mobile Sidebar Drawer -->
-  <div id="mobileMenu"
-       class="fixed inset-y-0 left-0 w-64 bg-white border-r border-gray-200 transform -translate-x-full transition-transform duration-300 z-40 lg:hidden">
-    <div class="p-4 border-b border-gray-200 flex justify-between items-center">
-      <span class="font-semibold text-gray-700">Menu</span>
-      <button id="closeMenu" class="text-gray-600 hover:text-gray-800">
-        ✕
-      </button>
-    </div>
-    <?php include __DIR__ . '/../nav/sidebar_buyer.php'; ?>
-  </div>
-
-  <!-- Main content area -->
   <div class="flex-1 lg:ml-64 mt-16 lg:mt-0">
     <!-- Topbar -->
-    <header class="hidden lg:block bg-white shadow-sm border-b border-gray-200">
+   
       <?php include __DIR__ . '/../nav/topbar_buyer.php'; ?>
-    </header>
-
     <!-- Main content -->
     <main class="max-w-7xl mx-auto px-6 py-8">
       <h1 class="text-2xl font-bold text-black mb-8">Checkout Details</h1>
@@ -82,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           <input type="text" placeholder="Unit/Floor" class="w-full p-3 border border-gray-300 rounded-md mb-4 focus:outline-none focus:ring-2 focus:ring-yellow-400">
           <input type="tel" placeholder="Phone Number" class="w-full p-3 border border-gray-300 rounded-md mb-4 focus:outline-none focus:ring-2 focus:ring-yellow-400">
           <label class="block text-sm font-medium text-gray-700 mb-2">Date</label>
-          <input type="datetime-local" class="w-full p-3 border border-gray-300 rounded-md mb-6 focus:outline-none focus:ring-2 focus:ring-yellow-400">
+          <input type="date" class="w-full p-3 border border-gray-300 rounded-md mb-6 focus:outline-none focus:ring-2 focus:ring-yellow-400">
           <button class="w-full bg-yellow-400 text-white py-3 rounded-md font-semibold hover:bg-yellow-500 focus:outline-none focus:ring-2 focus:ring-yellow-400 transition-colors">
             Place Order
           </button>
@@ -91,7 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <!-- Summary -->
         <?php
           $subtotal = (float)$price * (int)$quantity;
-          $delivery = 0;
+          $delivery = 50;
           $grand    = $subtotal + $delivery;
         ?>
         <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200">

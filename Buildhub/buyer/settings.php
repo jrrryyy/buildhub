@@ -83,14 +83,14 @@ function displayError($msg) {
 
   <div class="space-y-4">
     <input type="text" name="fname" placeholder="First Name"
-           class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-400">
+           class="w-full px-4 py-3 bg-yellow-50 border border-yellow-200 rounded-md text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
     <input type="text" name="lname" placeholder="Last Name"
-           class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-400">
+           class="w-full px-4 py-3 bg-yellow-50 border border-yellow-200 rounded-md text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
     <input type="email" name="current_email" placeholder="Current Email"
            value="<?= htmlspecialchars($_SESSION['email'] ?? '') ?>"
-           class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-400">
+           class="w-full px-4 py-3 bg-yellow-50 border border-yellow-200 rounded-md text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
     <input type="email" name="new_email" placeholder="New Email"
-           class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-400">
+           class="w-full px-4 py-3 bg-yellow-50 border border-yellow-200 rounded-md text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
 
     <button type="submit" name="update_profile"
             class="bg-yellow-400 text-black px-6 py-3 rounded-lg font-medium hover:bg-yellow-300 transition-colors duration-200">
@@ -100,7 +100,7 @@ function displayError($msg) {
 </form>
 
     <!-- ✅ ACCOUNT SETTINGS SECTION -->
-    <div class="bg-white rounded-lg shadow-sm p-6">
+    
       <form id="pwForm" method="POST" action="update.php" autocomplete="off" class="bg-white rounded-lg shadow-sm p-6">
   <h2 class="text-xl font-semibold text-black mb-2">Account Settings</h2>
   <p class="text-gray-600 mb-6">Manage your account</p>
@@ -124,7 +124,7 @@ function displayError($msg) {
       placeholder="Current Password"
       autocomplete="off"
       readonly
-      class="w-full p-3 rounded-lg border border-gray-300  focus:bg-white focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 transition"
+      class="w-full px-4 py-3 bg-yellow-50 border border-yellow-200 rounded-md text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
     >
 
     <input
@@ -133,7 +133,7 @@ function displayError($msg) {
       placeholder="New Password"
       autocomplete="off"
       readonly
-      class="w-full p-3 rounded-lg border border-gray-300 focus:bg-white focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 transition"
+      class="w-full px-4 py-3 bg-yellow-50 border border-yellow-200 rounded-md text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
     >
 
     <button type="submit"

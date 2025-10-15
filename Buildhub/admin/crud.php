@@ -3,8 +3,7 @@
 session_start();
 require '../login/config.php';
 if (isset($_POST['add'])) {
-    // Connect to DB
-    $conn = mysqli_connect("localhost", "root", "", "buildhub");
+    $conn = mysqli_connect("localhost", "root", "", "user_db");
 
     if (!$conn) {
         die("Database connection failed: " . mysqli_connect_error());
@@ -12,9 +11,12 @@ if (isset($_POST['add'])) {
 
     // Get form data safely
     $product_name = mysqli_real_escape_string($conn, $_POST['product_name']);
-    $weight = mysqli_real_escape_string($conn, $_POST['weight']);
-    $price = mysqli_real_escape_string($conn, $_POST['price']);
+    $unit_price = mysqli_real_escape_string($conn, $_POST['price']);
     $quantity = mysqli_real_escape_string($conn, $_POST['quantity']);
+    $description = mysqli_real_escape_string($conn, $_POST['description']);
+
+    // Optional: you can compute line total
+    $line_total = $unit_price * $quantity;
 
     // Handle file upload
     $file_name = $_FILES['image']['name'];
@@ -22,15 +24,15 @@ if (isset($_POST['add'])) {
     $upload_dir = '../images/';
     $folder = $upload_dir . basename($file_name);
 
-    // Validate and move file
     if (!empty($file_name)) {
         if (move_uploaded_file($temp_name, $folder)) {
-            // Insert into products table (use `file` column)
-            $sql = "INSERT INTO products (product_name, weight, price, quantity, file)
-                    VALUES ('$product_name', '$weight', '$price', '$quantity', '$file_name')";
+
+            // ✅ match your actual table column names
+            $sql = "INSERT INTO order_items (product_name, description, unit_price, quantity, file, line_total)
+                    VALUES ('$product_name', '$description', '$unit_price', '$quantity', '$file_name', '$line_total')";
 
             if (mysqli_query($conn, $sql)) {
-                header('Location: ../admin/testing.php');
+                header('Location: ../admin/orders.php');
                 exit();
             } else {
                 echo "❌ Database Error: " . mysqli_error($conn);
@@ -44,17 +46,7 @@ if (isset($_POST['add'])) {
 
     mysqli_close($conn);
 }
-/*deleting value in database*/
-    if (isset($_POST['delete'])) {
-    $product_name = $_POST['product_name'];
-    $sql = "DELETE FROM products WHERE product_name='$product_name'";
-    if ($conn->query($sql) === TRUE) {
-        header('Location: ../admin/testing.php');
-    } else {
-        echo "Error deleting record: " . $conn->error;
-    }
-    exit();
-}
+
 /*showing value in database
     if (isset($_POST['show'])) {
 $product_name = $_GET['product_name'] ?? '';

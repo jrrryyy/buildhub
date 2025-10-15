@@ -1,7 +1,7 @@
 <?php
 session_start();
-$conn=mysqli_connect("localhost","root","","buildhub");
-$sql  = "SELECT * FROM products";
+$conn=mysqli_connect("localhost","root","","user_db");
+$sql  = "SELECT * FROM order_items";
 $result = mysqli_query($conn, $sql);
 ?>
 <!DOCTYPE html>
@@ -53,9 +53,11 @@ $result = mysqli_query($conn, $sql);
 
   <div class="p-6">
     <h3 class="text-lg font-medium text-black mb-1"><?php echo $row['product_name']; ?></h3>
-    <p class="text-gray-600 text-sm mb-3"><?php echo $row['weight']; ?>KG per bag</p>
+    <p class="text-gray-600 text-sm mb-3">Description: <?php echo $row['description']; ?></p>
+    <p class="text-gray-600 text-sm mb-3">Stock: <?php echo $row['quantity']; ?></p>
+    <p class="text-gray-600 text-sm mb-3">Posted by <?= htmlspecialchars($_SESSION['fname'] ?? 'User') ?></p>
     <p class="text-xl font-semibold text-black mb-4">
-      ₱<span class="product-price"><?php echo $row['price']; ?></span> / bag
+      ₱<span class="product-price"><?php echo $row['unit_price']; ?></span> / unit(s)
     </p>
 
     <!-- Row layout like the screenshot -->
@@ -63,8 +65,8 @@ $result = mysqli_query($conn, $sql);
       <form action="checkout.php" method="POST" class="book-form flex items-center gap-x-4" data-image="../images/<?php echo $row['file']; ?>">
         <!-- Hidden Inputs -->
         <input type="hidden" name="product_name" value="<?php echo $row['product_name']; ?>">
-        <input type="hidden" name="price" value="<?php echo $row['price']; ?>">
-        <input type="hidden" name="weight" value="<?php echo $row['weight']; ?>">
+        <input type="hidden" name="price" value="<?php echo $row['unit_price']; ?>">
+        <input type="hidden" name="weight" value="<?php echo $row['description']; ?>">
         <input type="hidden" name="quantity" class="quantity-input" value="0">
         <input type="hidden" name="total" class="total-input" value="0">
         <input type="hidden" name="image" value="../images/<?php echo $row['file']; ?>">
@@ -75,6 +77,7 @@ $result = mysqli_query($conn, $sql);
         </button>
 
         <!-- Counter -->
+      
         <div class="flex items-center border border-gray-300 rounded-md px-2 py-1 bg-white shadow-sm">
           <button type="button" class="decreaseBtn px-2 py-1 text-gray-500 hover:text-gray-700 ">-</button>
           <span class="counter mx-3 text-sm font-medium">0</span>

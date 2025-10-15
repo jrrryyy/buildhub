@@ -2,7 +2,7 @@
 $host = "localhost";
 $user = "root";
 $password = "";
-$database = "buildhub";
+$database = "user_db";
 
 $conn = new mysqli($host, $user, $password, $database);
 
@@ -11,6 +11,4 @@ if ($conn->connect_error) {
 }
 
 
-
 ?>
-
