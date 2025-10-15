@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,6 +8,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>My Orders Dashboard</title>
   <script src="https://cdn.tailwindcss.com"></script> <!-- Tailwind CSS via CDN -->
+  <script src="../js/dropdown.js" defer></script>
 </head>
 <body class="bg-gray-50">
 
