@@ -38,7 +38,7 @@ $grand    = $subtotal + $delivery;
 
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <!-- Address (=> form posts to My Orders) -->
-        <form method="POST" action="my_orders.php" class="bg-white p-6 rounded-lg shadow-md">
+        <form method="POST" action="myorders.php" class="bg-white p-6 rounded-lg shadow-md">
           <h2 class="text-lg font-semibold text-black mb-6">Address Details</h2>
 
           <!-- Address fields -->
