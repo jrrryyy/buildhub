@@ -1,11 +1,22 @@
 <?php
 session_start();
+function back_to_checkout(string $code, string $msg): void {
+  $_SESSION['checkout_error'] = $msg;   // message to show
+  $_SESSION['checkout_old']   = $_POST; // keep what user typed
+  header('Location: ./checkout.php?error='.$code);
+  exit;
+}
 
+$product_id = (int)($_POST['product_id'] ?? 0);
+if ($product_id <= 0) {
+  header('Location: orders.php?error=no_product'); // or wherever your browse page is
+  exit;
+}
 /* Always set safe defaults so GET won't throw notices */
 $product_name = $_POST['product_name'] ?? '';
 $price        = (float)($_POST['price'] ?? 0);
 $quantity     = (int)  ($_POST['quantity'] ?? 0);
-$weight       = $_POST['weight'] ?? '';
+$description  = $_POST['description'] ?? '';
 $image        = $_POST['image'] ?? '';
 
 $subtotal = $price * $quantity;
@@ -43,7 +54,7 @@ $grand    = $subtotal + $delivery;
 
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <!-- Address (=> form posts to My Orders) -->
-        <form method="POST" action="../buyer/crud.php" class="bg-white p-6 rounded-lg shadow-md">
+        <form method="POST" action="./crud.php" class="bg-white p-6 rounded-lg shadow-md">
           <h2 class="text-lg font-semibold text-black mb-6">Address Details</h2>
        
           <!-- Address fields -->
@@ -52,19 +63,22 @@ $grand    = $subtotal + $delivery;
           <input name="province" type="text" placeholder="Province" class="w-full p-3 border border-gray-300 rounded-md mb-4 focus:outline-none focus:ring-2 focus:ring-yellow-400">
           <input name="phone" type="tel" placeholder="Phone Number" class="w-full p-3 border border-gray-300 rounded-md mb-4 focus:outline-none focus:ring-2 focus:ring-yellow-400" required>
           <label class="block text-sm font-medium text-gray-700 mb-2">Delivery Date</label>
-          <input name="schedule_date" type="date" class="w-full p-3 border border-gray-300 rounded-md mb-6 focus:outline-none focus:ring-2 focus:ring-yellow-400" required>
+          <input name="schedule_date" type="date" min="<?= date('Y-m-d') ?>" class="w-full p-3 border border-gray-300 rounded-md mb-6 focus:outline-none focus:ring-2 focus:ring-yellow-400" required>
 
           <!-- Hidden product payload -->
-          <input type="hidden" name="product_name" value="<?php echo htmlspecialchars($product_name); ?>">
-          <input type="hidden" name="price"        value="<?php echo htmlspecialchars($price); ?>">
-          <input type="hidden" name="quantity"     value="<?php echo htmlspecialchars($quantity); ?>">
-          <input type="hidden" name="weight"       value="<?php echo htmlspecialchars($weight); ?>">
-          <input type="hidden" name="image"        value="<?php echo htmlspecialchars($image); ?>">
-          <input type="hidden" name="delivery"     value="<?php echo htmlspecialchars($delivery); ?>">
-          <input type="hidden" name="subtotal"     value="<?php echo htmlspecialchars($subtotal); ?>">
-          <input type="hidden" name="grand"        value="<?php echo htmlspecialchars($grand); ?>">
-          <input type="hidden" name="ordered_at"   value="<?php echo date('Y-m-d'); ?>">
-          <input type="hidden" name="status"       value="Pending">
+          <!-- Hidden product payload -->
+<input type="hidden" name="product_id"   value="<?= $product_id ?>">
+<input type="hidden" name="product_name" value="<?= htmlspecialchars($product_name) ?>">
+<input type="hidden" name="price"        value="<?= htmlspecialchars($price) ?>">
+<input type="hidden" name="quantity"     value="<?= htmlspecialchars($quantity) ?>">
+<input type="hidden" name="description"  value="<?= htmlspecialchars($description) ?>">
+<input type="hidden" name="image"        value="<?= htmlspecialchars($image) ?>">
+<input type="hidden" name="delivery"     value="<?= htmlspecialchars($delivery) ?>">
+<input type="hidden" name="subtotal"     value="<?= htmlspecialchars($subtotal) ?>">
+<input type="hidden" name="grand"        value="<?= htmlspecialchars($grand) ?>">
+<input type="hidden" name="ordered_at"   value="<?= date('Y-m-d') ?>">
+
+
 
           <button name="place_order" class="w-full bg-yellow-400 text-white py-3 rounded-md font-semibold hover:bg-yellow-500 focus:outline-none focus:ring-2 focus:ring-yellow-400 transition-colors">
             Place Order
@@ -83,7 +97,7 @@ $grand    = $subtotal + $delivery;
               <?php endif; ?>
               <div class="flex-1 leading-tight">
                 <h3 class="font-semibold text-black"><?php echo htmlspecialchars($product_name); ?></h3>
-                <p class="text-xs text-gray-500"><?php echo htmlspecialchars($weight); ?>KG per bag</p>
+                <p class="text-xs text-gray-500"><?php echo htmlspecialchars($description); ?></p>
                 <p class="mt-1 text-sm font-semibold text-black">
                   ₱<?php echo number_format((float)$price, 2); ?>
                   <span class="text-gray-500 font-normal">/ bag</span>

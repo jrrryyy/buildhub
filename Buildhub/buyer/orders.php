@@ -1,7 +1,18 @@
 <?php
 session_start();
-$conn=mysqli_connect("localhost","root","","user_db");
-$sql  = "SELECT * FROM products";
+$conn = mysqli_connect("localhost","root","","user_db");
+
+$sql = "
+  SELECT p.*,
+         TRIM(CONCAT(
+           COALESCE(u.fname, u.fname, ''),
+           ' ',
+           COALESCE(u.lname,  u.lname, '')
+         )) AS posted_by
+  FROM products p
+  LEFT JOIN users u ON u.id = p.user_id   -- FK: products.user_id -> users.id
+  ORDER BY p.id DESC
+";
 $result = mysqli_query($conn, $sql);
 ?>
 <!DOCTYPE html>
@@ -57,7 +68,7 @@ $result = mysqli_query($conn, $sql);
         </h3>
 
         <p class="text-gray-600 text-sm mb-3">
-          Description: <?php echo $row['description']; ?>
+          <?php echo $row['description']; ?>
         </p>
 
         <p class="text-gray-600 text-sm mb-3">
@@ -65,7 +76,7 @@ $result = mysqli_query($conn, $sql);
         </p>
 
         <p class="text-gray-600 text-sm mb-3">
-          Posted by <?= htmlspecialchars($_SESSION['user_id'] ?? 'fname') ?>
+        Posted by <?= htmlspecialchars($row['posted_by'] ?? 'Unknown') ?>
         </p>
 
         <p class="text-lg md:text-xl font-semibold text-black mb-4">
@@ -81,9 +92,10 @@ $result = mysqli_query($conn, $sql);
             data-image="../images/<?php echo $row['file']; ?>"
           >
             <!-- Hidden Inputs -->
+             <input type="hidden" name="product_id" value="<?= (int)$row['id'] ?>">
             <input type="hidden" name="product_name" value="<?php echo $row['product_name']; ?>">
             <input type="hidden" name="price"        value="<?php echo $row['unit_price']; ?>">
-            <input type="hidden" name="weight"       value="<?php echo $row['description']; ?>">
+            <input type="hidden" name="description"  value="<?php echo $row['description']; ?>">
             <input type="hidden" name="quantity"     class="quantity-input" value="0">
             <input type="hidden" name="total"        class="total-input" value="0">
             <input type="hidden" name="image"        value="../images/<?php echo $row['file']; ?>">
@@ -97,14 +109,16 @@ $result = mysqli_query($conn, $sql);
             </button>
 
             <!-- Counter -->
-            <div class="flex items-center border border-gray-300 rounded-md px-2 py-1 bg-white shadow-sm">
-              <button type="button" class="decreaseBtn px-2 py-1 text-gray-500 hover:text-gray-700">-</button>
-              <span class="counter mx-3 text-sm font-medium">0</span>
-              <button type="button" class="increaseBtn px-2 py-1 text-gray-500 hover:text-gray-700">+</button>
-            </div>
+    <div class="flex items-stretch border border-gray-300 rounded-md bg-white shadow-sm
+            w-full max-w-[10rem] sm:max-w-[12rem]">
+  <input type="number" min="0" value="0" class="quantity-field w-full text-center text-black outline-none px-3 py-2
+           text-base sm:text-sm focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+  />
+</div>
+
 
             <!-- Total on the right (stays right on md+, drops under on mobile) -->
-            <p class="text-sm text-gray-600 whitespace-nowrap ml-0 md:ml-4">
+            <p class="text-sm text-gray-600 whitespace-nowrap ml-0 md:ml-0 h-10 flex items-center">
               Total: <span class="total-value font-semibold text-black">₱0.00</span>
             </p>
           </form>

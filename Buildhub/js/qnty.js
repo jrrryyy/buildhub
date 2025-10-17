@@ -1,22 +1,38 @@
 document.addEventListener('DOMContentLoaded', () => {
-  // Only bind cards that do NOT contain a .book-form
-  document.querySelectorAll('.bg-white.rounded-lg.shadow-md').forEach(card => {
-    if (card.querySelector('.book-form')) return; // ← skip this card
-    if (card.dataset.bound) return; card.dataset.bound = '1';
-    const inc = card.querySelector('.increaseBtn');
-    const dec = card.querySelector('.decreaseBtn');
-    const counter = card.querySelector('.counter');
-    const totalEl = card.querySelector('.total-value');
-    const price = Number((card.querySelector('.product-price')?.textContent || '0').replace(/[^\d.]/g,'')) || 0;
+  document.querySelectorAll('.book-form').forEach(form => {
+    if (form.dataset.bound) return; form.dataset.bound = '1';
 
-    const set = (n) => {
-      counter.textContent = n;
-      totalEl.textContent = `₱${(n*price).toFixed(2)}`;
-    };
+    const qtyField   = form.querySelector('.quantity-field');   // visible <input type="number">
+    const qtyHidden  = form.querySelector('.quantity-input');   // hidden input name="quantity"
+    const totalHidden= form.querySelector('.total-input');       // hidden input name="total"
+    const totalText  = form.querySelector('.total-value');       // "₱0.00" span
+    const price      = parseFloat(form.querySelector('input[name="price"]')?.value || '0') || 0;
 
-    inc?.addEventListener('click', () => set((+counter.textContent||0) + 1));
-    dec?.addEventListener('click', () => set(Math.max(0, (+counter.textContent||0) - 1)));
+    function clampInt(v){ v = parseInt(v, 10); return isNaN(v) || v < 0 ? 0 : v; }
+    function peso(n){ return '₱' + Number(n).toFixed(2); }
 
-    set(+counter.textContent||0);
+    function update(n){
+      const q = clampInt(n);
+      const t = q * price;
+      qtyField.value    = q;
+      qtyHidden.value   = q;
+      totalHidden.value = t.toFixed(2);
+      if (totalText) totalText.textContent = peso(t);
+    }
+
+    // init
+    update(qtyField.value || 0);
+
+    // react to typing/clicks on the number input
+    qtyField.addEventListener('input', () => update(qtyField.value));
+
+    // guard: block submit if qty is 0
+    form.addEventListener('submit', (e) => {
+      if (clampInt(qtyField.value) === 0) {
+        e.preventDefault();
+        alert('Please select a quantity greater than 0.');
+        qtyField.focus();
+      }
+    });
   });
 });

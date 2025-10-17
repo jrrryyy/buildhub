@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 17, 2025 at 10:52 AM
+-- Generation Time: Oct 17, 2025 at 07:58 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -30,7 +30,7 @@ SET time_zone = "+00:00";
 CREATE TABLE `orders` (
   `id` int(11) UNSIGNED NOT NULL,
   `buyer_id` int(10) UNSIGNED DEFAULT NULL,
-  `supplier_id` int(10) UNSIGNED NOT NULL,
+  `supplier_id` int(10) UNSIGNED DEFAULT NULL,
   `recipient_name` varchar(100) NOT NULL,
   `address_line` varchar(255) NOT NULL,
   `province` varchar(50) DEFAULT NULL,
@@ -48,8 +48,12 @@ CREATE TABLE `orders` (
 --
 
 INSERT INTO `orders` (`id`, `buyer_id`, `supplier_id`, `recipient_name`, `address_line`, `province`, `phone`, `schedule_date`, `product_name`, `total_amount`, `ordered_at`, `status`, `updated_at`) VALUES
-(5, 67, 0, 'jed', '221 Boulivard st.', 'pangasinan', 'asd', '2025-10-22', 'cement', 250, '0000-00-00 00:00:00', 'pending', '2025-10-17 16:47:35'),
-(6, 67, 0, 'johann', 'Bari mangaldan', 'pangasinan', '099999999', '2025-09-04', 'cement', 450, '0000-00-00 00:00:00', 'pending', '2025-10-17 16:49:36');
+(17, 67, 69, 'johann', 'Bari mangaldan', 'pangasinan', '90909090', '2025-10-18', 'cement', 51, '0000-00-00 00:00:00', 'completed', '2025-10-18 01:20:31'),
+(18, 67, 69, 'johann', 'Bari mangaldan', 'pangasinan', '90909090', '2025-10-18', 'cement', 51, '0000-00-00 00:00:00', 'accepted', '2025-10-18 01:21:41'),
+(19, 67, 69, 'johann', 'Bari mangaldan', 'pangasinan', '90909090', '2025-10-18', 'cement', 51, '0000-00-00 00:00:00', 'accepted', '2025-10-18 01:27:43'),
+(20, 67, 69, 'johann', 'Bari mangaldan', 'pangasinan', '90909090', '2025-10-18', 'haha', 51, '0000-00-00 00:00:00', 'accepted', '2025-10-18 01:40:02'),
+(21, 67, 69, 'johann', 'Bari mangaldan', 'pangasinan', '90909090', '2025-10-18', 'haha', 51, '0000-00-00 00:00:00', 'pending', '2025-10-18 01:54:44'),
+(22, 67, 69, 'johann', 'Bari mangaldan', 'pangasinan', '90909090', '2025-10-18', 'haha', 51, '0000-00-00 00:00:00', 'pending', '2025-10-18 01:56:29');
 
 -- --------------------------------------------------------
 
@@ -92,7 +96,9 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`id`, `user_id`, `order_id`, `product_id`, `product_name`, `description`, `unit_price`, `quantity`, `file`, `line_total`, `created_at`, `updated_at`) VALUES
-(45, 69, 0, 0, 'cement', 'good quality', 200, 100, '20251017_104710_403ce702.jpg', 20000, '2025-10-17 16:47:10', '2025-10-17 16:47:10');
+(47, 71, 0, 0, 'cement', 'good quality', 300, 100, '20251017_164745_0579b542.jpg', 30000, '2025-10-17 22:47:45', '2025-10-17 22:47:58'),
+(49, 69, 0, 0, 'cement', '', 1, 1, '20251017_184424_9a23637260.jpg', 1, '2025-10-18 00:44:09', '2025-10-18 00:44:24'),
+(50, 69, 0, 0, 'haha', '', 1, 1, '20251017_184549_c95d1a14.jpg', 1, '2025-10-18 00:45:49', '2025-10-18 01:37:05');
 
 -- --------------------------------------------------------
 
@@ -115,7 +121,9 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id`, `fname`, `lname`, `email`, `password`, `role`) VALUES
 (67, 'jed', 'yulo', 'jed@gmail.com', '$2y$10$Lw4an8bcBHW89h97t1IJK.pVqdJykA8dq2o/uxgkIHojF1/qhbQpu', 'buyer'),
-(69, 'jed', 'yulo', 'seller@gmail.com', '$2y$10$LLu6WieWQ5TpswuXBvTOzO0z1KTdrbZEedtgmW6k176BsaIieBRRG', 'seller');
+(69, 'jed', 'yulo', 'seller@gmail.com', '$2y$10$LLu6WieWQ5TpswuXBvTOzO0z1KTdrbZEedtgmW6k176BsaIieBRRG', 'seller'),
+(70, 'status', 'Yulo', 'buyer@gmail.com', '$2y$10$SeU/G07lw.bSw9BDcab5f.8BQI2693U7mzXGOZ118aRhqKbnwAOk6', 'buyer'),
+(71, 'johann', 'ba kamo?', 'ken@gmail.com', '$2y$10$EGWjlEjc/hDYEAuW5dzuyOhJCsTJr7LbdDERSnfsVuUSrA3OwRUW2', 'seller');
 
 --
 -- Indexes for dumped tables
@@ -126,7 +134,8 @@ INSERT INTO `users` (`id`, `fname`, `lname`, `email`, `password`, `role`) VALUES
 --
 ALTER TABLE `orders`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `fk_orders_buyer` (`buyer_id`);
+  ADD KEY `fk_orders_buyer` (`buyer_id`),
+  ADD KEY `idx_orders_supplier` (`supplier_id`);
 
 --
 -- Indexes for table `products`
@@ -150,23 +159,29 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=70;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=72;
 
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `orders`
+--
+ALTER TABLE `orders`
+  ADD CONSTRAINT `fk_orders_supplier` FOREIGN KEY (`supplier_id`) REFERENCES `users` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
 -- Constraints for table `products`

@@ -176,18 +176,6 @@ if (isset($_POST['delete'])) {
     $id = (int)($_POST['id'] ?? 0);
     if ($id <= 0) back_with_error('Invalid product ID.');
 
-    // 1) Get product name first (for a nicer confirmation message)
-    $name = null;
-    if ($stmt = $conn->prepare("SELECT product_name FROM products WHERE id = ? AND user_id = ?")) {
-        $stmt->bind_param("ii", $id, $sellerId);
-        if ($stmt->execute()) {
-            $stmt->bind_result($name);
-            $stmt->fetch();
-        }
-        $stmt->close();
-    }
-
-    // 2) Proceed to delete
     $stmt = $conn->prepare("DELETE FROM products WHERE id = ? AND user_id = ?");
     if (!$stmt) back_with_error('Prepare failed: '.$conn->error);
     if (!$stmt->bind_param("ii", $id, $sellerId)) back_with_error('Bind failed: '.$stmt->error);
@@ -201,12 +189,11 @@ if (isset($_POST['delete'])) {
 
     if ($affected > 0) {
         unset($_SESSION['open_add_modal']);
-        // Compose a friendlier confirmation text
-        $label = $name ? "‘{$name}’ (ID {$id})" : "ID {$id}";
-        back_with_success("Product deleted: {$label}.");
+        back_with_success('Product deleted.');
     } else {
         back_with_error('Product not found or not owned by you.');
     }
 }
+
 /* -------------------- FALLBACK -------------------- */
 back_with_error('No action.');
