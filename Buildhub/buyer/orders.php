@@ -1,7 +1,7 @@
 <?php
 session_start();
 $conn=mysqli_connect("localhost","root","","user_db");
-$sql  = "SELECT * FROM order_items";
+$sql  = "SELECT * FROM products";
 $result = mysqli_query($conn, $sql);
 ?>
 <!DOCTYPE html>
@@ -55,7 +55,7 @@ $result = mysqli_query($conn, $sql);
     <h3 class="text-lg font-medium text-black mb-1"><?php echo $row['product_name']; ?></h3>
     <p class="text-gray-600 text-sm mb-3">Description: <?php echo $row['description']; ?></p>
     <p class="text-gray-600 text-sm mb-3">Stock: <?php echo $row['quantity']; ?></p>
-    <p class="text-gray-600 text-sm mb-3">Posted by <?= htmlspecialchars($_SESSION['fname'] ?? 'User') ?></p>
+    <p class="text-gray-600 text-sm mb-3">Posted by <?= htmlspecialchars($_SESSION['user_id'] ?? 'fname') ?></p>
     <p class="text-xl font-semibold text-black mb-4">
       ₱<span class="product-price"><?php echo $row['unit_price']; ?></span> / unit(s)
     </p>

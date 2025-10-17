@@ -1,6 +1,7 @@
 <div class="sticky top-0 z-[10] bg-white border-b border-gray-200 px-6 py-4 flex justify-end items-center transition-all duration-300 lg:ml-640">
 
   <div class="relative">
+      <h1 class="text-gray-500 text-xs md:text-sm font-semibold px-4 mt-4 mb-2 hidden md:block">Seller Menu</h1>
     <button id="profileButton" class="flex items-center space-x-3 focus:outline-none">
       <img src="../images/korina.png" alt="user-image" class="w-10 h-10 rounded-full border border-gray-300" />
       <div class="hidden md:block text-left">

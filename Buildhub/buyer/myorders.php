@@ -97,7 +97,7 @@ function renderCard($row){
 /* ---------- collect DB rows (optional) ---------- */
 $buckets = ['Pending'=>[], 'Accepted'=>[], 'Completed'=>[]];
 if ($conn) {
-  if ($res = mysqli_query($conn, "SELECT * FROM order_items ORDER BY id DESC")) {
+  if ($res = mysqli_query($conn, "SELECT * FROM products ORDER BY id DESC")) {
     while ($r = mysqli_fetch_assoc($res)) {
       $s = strtolower($r['status'] ?? 'pending');
       $k = ($s==='accepted' ? 'Accepted' : ($s==='completed' ? 'Completed' : 'Pending'));

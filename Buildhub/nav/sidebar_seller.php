@@ -1,8 +1,8 @@
 <aside class="bg-white border-r border-gray-200 w-16 md:w-64 flex flex-col transition-all duration-300 fixed top-0 left-0 h-screen z-[20] overflow-y-auto">
   <!-- Logo -->
-  <div class="p-4 border-b border-gray-200 flex-shrink-0">
+  <a href="../admin/index.php" class="p-4 border-b border-gray-200 flex-shrink-0">
     <div class="bg-yellow-400 text-black font-bold px-4 py-2 rounded-xl text-sm md:text-base hidden md:block">BuildHub</div>
-  </div>
+  </a>
 
   <!-- Navigation Items -->
   <nav class="flex-1 p-2 md:p-4 space-y-1 md:space-y-2 mt-4">

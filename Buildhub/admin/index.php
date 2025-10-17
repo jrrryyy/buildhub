@@ -8,7 +8,7 @@ session_start();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BuildHub Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="dropdown.js"></script>
+    <script src="../js/dropdown.js" defer></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/heroicons@2.0.18/24/outline/index.css">
     <script>
         tailwind.config = {
