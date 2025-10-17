@@ -19,15 +19,17 @@ function badgeClasses($status){
 }
 function renderCard($row){
   $title       = $row['product_name'] ?? 'Untitled';
-  $desc        = $row['description']   ?? ($row['desc'] ?? 'No description provided.');
-  $status      = $row['status']        ?? 'Pending';
-  $orderedAt   = $row['ordered_at']    ?? null;
-  $scheduledAt = $row['scheduled_at']  ?? null;
-  $qty         = isset($row['quantity'])   ? (float)$row['quantity']   : null;
-  $unit        = isset($row['unit_price']) ? (float)$row['unit_price'] : (isset($row['price']) ? (float)$row['price'] : null);
-  $total       = isset($row['total'])      ? (float)$row['total']      : (isset($row['grand']) ? (float)$row['grand'] : null);
-  if ($total === null) { if ($qty!==null && $unit!==null) $total = $qty*$unit; elseif ($unit!==null) $total = $unit; else $total = 0; }
-  $id = $row['id'] ?? '';
+  // If no explicit description was set, compose one from address + province + phone
+  $desc        = $row['description'] ?? (($row['address_line'] ?? '') .
+                   (isset($row['province']) && $row['province'] !== null ? ' • '.$row['province'] : '') .
+                   (isset($row['phone']) && $row['phone'] !== '' ? ' • '.$row['phone'] : ''));
+  $desc        = trim($desc) === '' ? 'No description provided.' : $desc;
+
+  $status      = $row['status']        ?? 'pending';
+  $orderedAt   = $row['ordered_at']    ?? null;              // DATETIME
+  $scheduledAt = $row['schedule_date'] ?? null;              // DATE (no time)
+  $total       = isset($row['total_amount']) ? (float)$row['total_amount'] : 0;
+  $id          = $row['id'] ?? '';
 
   ?>
   <article class="bg-white rounded-xl border border-slate-200 shadow-sm p-5 mt-4">
@@ -43,7 +45,7 @@ function renderCard($row){
         <h3 class="text-lg font-semibold text-slate-900 leading-tight"><?php echo h($title); ?></h3>
       </div>
       <span class="inline-flex items-center rounded-full <?php echo badgeClasses($status); ?> px-3 py-1 text-xs font-medium">
-        <?php echo h($status); ?>
+        <?php echo h(ucfirst($status)); ?>
       </span>
     </div>
 
@@ -54,18 +56,17 @@ function renderCard($row){
         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-width="1.5" d="M12 6v6l4 2"/><circle cx="12" cy="12" r="9" stroke-width="1.5" fill="none"/>
         </svg>
-        <span>Ordered: <?php echo h(fmtDate($orderedAt)); ?></span>
+        <span>Ordered: <?php echo h(fmtDateTime($orderedAt)); ?></span>
       </div>
       <div class="flex items-center gap-2">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-width="1.5" d="M8 2v3M16 2v3M3 9h18M4 7h16a1 1 0 011 1v11a2 2 0 01-2 2H5a2 2 0 01-2-2V8a1 1 0 011-1z"/>
         </svg>
-        <span>Scheduled: <?php echo h(fmtDateTime($scheduledAt)); ?></span>
+        <span>Scheduled: <?php echo h(fmtDate($scheduledAt)); ?></span>
       </div>
     </div>
 
     <hr class="my-4 border-slate-200"/>
-
     <div class="text-xl font-semibold text-blue-600"><?php echo h(peso($total)); ?></div>
 
     <?php if (strtolower($status)==='pending'): ?>
@@ -94,38 +95,42 @@ function renderCard($row){
   <?php
 }
 
+
 /* ---------- collect DB rows (optional) ---------- */
+/* ---------- collect DB rows from ORDERS ---------- */
 $buckets = ['Pending'=>[], 'Accepted'=>[], 'Completed'=>[]];
-if ($conn) {
-  if ($res = mysqli_query($conn, "SELECT * FROM products ORDER BY id DESC")) {
+
+$buyerId = (int)($_SESSION['user_id'] ?? 0);
+if ($conn && $buyerId > 0) {
+  $sql = "SELECT id, product_name, status, ordered_at, schedule_date,
+                 total_amount, address_line, province, phone
+          FROM orders
+          WHERE buyer_id = ?
+          ORDER BY id DESC";
+  if ($stmt = mysqli_prepare($conn, $sql)) {
+    mysqli_stmt_bind_param($stmt, 'i', $buyerId);
+    mysqli_stmt_execute($stmt);
+    $res = mysqli_stmt_get_result($stmt);
     while ($r = mysqli_fetch_assoc($res)) {
+      // (optional) set a prebuilt description for the card
+      $r['description'] = trim(
+        ($r['address_line'] ?? '') .
+        (isset($r['province']) && $r['province'] !== null ? ' • '.$r['province'] : '') .
+        (isset($r['phone'])    && $r['phone']    !== ''   ? ' • '.$r['phone']    : '')
+      );
+
       $s = strtolower($r['status'] ?? 'pending');
       $k = ($s==='accepted' ? 'Accepted' : ($s==='completed' ? 'Completed' : 'Pending'));
       $buckets[$k][] = $r;
     }
+    mysqli_stmt_close($stmt);
   }
-}
-
-/* ---------- capture POST from checkout (always shown as Pending) ---------- */
-if ($_SERVER['REQUEST_METHOD']==='POST') {
-  $incoming = [
-    'product_name' => $_POST['product_name'] ?? 'Untitled',
-    'description'  => ($_POST['quantity'] ?? '1') . ' bag(s) • ' . ($_POST['weight'] ?? '—') . ' KG',
-    'status'       => $_POST['status'] ?? 'Pending',
-    'ordered_at'   => $_POST['ordered_at'] ?? date('Y-m-d'),
-    'scheduled_at' => $_POST['schedule_date'] ?? null,
-    'quantity'     => $_POST['quantity'] ?? 1,
-    'unit_price'   => $_POST['price'] ?? 0,
-    'total'        => $_POST['grand'] ?? null,
-    'image'        => $_POST['image'] ?? '',
-  ];
-  $buckets['Pending'] = array_merge([$incoming], $buckets['Pending']); // show on top
 }
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8">    
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>My Orders Dashboard</title>
   <script src="https://cdn.tailwindcss.com"></script>

@@ -75,67 +75,73 @@ header('Content-Type: text/html; charset=utf-8');
       <div class="p-6">
         <h2 class="text-2xl font-semibold text-black mb-6">Listings</h2>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <?php if (empty($items)): ?>
-            <p class="text-gray-600">No items found.</p>
-          <?php else: ?>
-            <?php foreach ($items as $row): ?>
-              <div class="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200 max-w-sm">
-                <img
-                  src="<?='../images/'.h($row['file'],'placeholder.png')?>"
-                  alt="<?=h($row['product_name'],'Product')?>"
-                  class="w-full h-auto max-h-48 md:max-h-64 object-cover rounded-t-lg"
-                />
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
+  <?php if (empty($items)): ?>
+    <p class="text-gray-600 col-span-full">No items found.</p>
+  <?php else: ?>
+    <?php foreach ($items as $row): ?>
+      <div class="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200 w-full h-full">
+        <img
+          src="<?='../images/'.h($row['file'],'placeholder.png')?>"
+          alt="<?=h($row['product_name'],'Product')?>"
+          class="w-full aspect-[4/3] object-cover"
+        />
 
-                <div class="p-6">
-                  <h3 class="text-lg font-medium text-black mb-1"><?=h($row['product_name'],'—')?></h3>
-                  <p class="text-gray-600 text-sm mb-3"><?=h($row['description'],'—')?></p>
-                  <p class="text-gray-600 text-sm mb-3">Stock: <?=h($row['quantity'],'0')?></p>
-                  <p class="text-gray-600 text-sm mb-3"></p>
+        <div class="p-4 md:p-6">
+          <h3 class="text-base md:text-lg font-medium text-black mb-1"><?=h($row['product_name'],'—')?></h3>
+          <p class="text-gray-600 text-sm md:text-[15px] mb-3 line-clamp-3"><?=h($row['description'],'—')?></p>
 
-                  <p class="text-xl font-semibold text-black mb-4">
-                    ₱<span class="product-price"><?=h($row['unit_price'],'0')?></span> / unit(s)
-                  </p>
+          <div class="flex items-center justify-between text-sm text-gray-600 mb-3">
+            <span>Stock: <?=h($row['quantity'],'0')?></span>
+          </div>
 
-                  <div class="flex items-center gap-x-4">
-                    <form action="checkout.php" method="POST" class="book-form flex items-center gap-x-4"
-                          data-image="<?='../images/'.h($row['file'])?>">
-                      <!-- Hidden -->
-                      <input type="hidden" name="product_name" value="<?=h($row['product_name'])?>">
-                      <input type="hidden" name="price"        value="<?=h($row['unit_price'])?>">
-                      <input type="hidden" name="weight"       value="<?=h($row['description'])?>">
-                      <input type="hidden" name="quantity"     class="quantity-input" value="0">
-                      <input type="hidden" name="total"        class="total-input" value="0">
-                      <input type="hidden" name="image"        value="<?='../images/'.h($row['file'])?>">
+          <p class="text-lg md:text-xl font-semibold text-black mb-4">
+            ₱<span class="product-price"><?=h($row['unit_price'],'0')?></span> <span class="text-gray-600 font-normal">/ unit(s)</span>
+          </p>
 
-                      <!-- Update button (opens global modal) -->
-                      <button
-                        type="button"
-                        class="openUpdateModal px-12 py-2 bg-white text-black border border-gray-300 rounded-md hover:bg-gray-50"
-                        data-id="<?= (int)$row['id'] ?>"
-                        data-name="<?= h($row['product_name']) ?>"
-                        data-qty="<?= h($row['quantity'], '0') ?>"
-                        data-price="<?= h($row['unit_price'], '0') ?>"
-                        data-desc="<?= h($row['description']) ?>"
-                        data-image="<?='../images/'.h($row['file'],'placeholder.png')?>"
-                      >
-                        Update
-                      </button>
-                    </form>
+          <div class="flex flex-col sm:flex-row sm:flex-wrap gap-3">
+            <form action="" method="POST" class="book-form flex w-full sm:w-auto"
+                  data-image="<?='../images/'.h($row['file'])?>">
+              <!-- Hidden -->
+              <input type="hidden" name="product_name" value="<?=h($row['product_name'])?>">
+              <input type="hidden" name="price"        value="<?=h($row['unit_price'])?>">
+              <input type="hidden" name="weight"       value="<?=h($row['description'])?>">
+              <input type="hidden" name="quantity"     class="quantity-input" value="0">
+              <input type="hidden" name="total"        class="total-input" value="0">
+              <input type="hidden" name="image"        value="<?='../images/'.h($row['file'])?>">
 
-                    <form action="../admin/crud.php" method="POST" class="inline">
-                      <input type="hidden" name="id" value="<?= (int)$row['id'] ?>">
-                      <button type="submit" name="delete" value="1"
-                        class="px-14 py-2 bg-white text-black border border-gray-300 rounded-md hover:bg-gray-50">
-                        Delete
-                      </button>
-                    </form>
-                  </div>
-                </div>
-              </div>
-            <?php endforeach; ?>
-          <?php endif; ?>
+              <!-- Update button (opens global modal) -->
+              <button
+                type="button"
+                class="openUpdateModal w-full sm:w-auto px-5 md:px-6 py-2 bg-white text-black border border-gray-300 rounded-md hover:bg-gray-50"
+                data-id="<?= (int)$row['id'] ?>"
+                data-name="<?= h($row['product_name']) ?>"
+                data-qty="<?= h($row['quantity'], '0') ?>"
+                data-price="<?= h($row['unit_price'], '0') ?>"
+                data-desc="<?= h($row['description']) ?>"
+                data-image="<?='../images/'.h($row['file'],'placeholder.png')?>"
+              >
+                Update
+              </button>
+            </form>
+
+            <!-- Delete button -->
+            <form action="../admin/crud.php" method="POST"
+                  onsubmit="return confirm('Are you sure you want to delete this product?');"
+                  class="w-full sm:w-auto">
+              <input type="hidden" name="id" value="<?= (int)$row['id'] ?>">
+              <button type="submit" name="delete" value="1"
+                      class="w-full sm:w-auto px-5 md:px-6 py-2 bg-white text-black border border-gray-300 rounded-md hover:bg-gray-50">
+                Delete
+              </button>
+            </form>
+          </div>
         </div>
+      </div>
+    <?php endforeach; ?>
+  <?php endif; ?>
+</div>
+
       </div>
     </main>
   </div>

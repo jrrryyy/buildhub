@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 17, 2025 at 08:13 AM
+-- Generation Time: Oct 17, 2025 at 10:52 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -29,18 +29,27 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `orders` (
   `id` int(11) UNSIGNED NOT NULL,
-  `buyer_id` int(10) UNSIGNED NOT NULL,
+  `buyer_id` int(10) UNSIGNED DEFAULT NULL,
   `supplier_id` int(10) UNSIGNED NOT NULL,
   `recipient_name` varchar(100) NOT NULL,
   `address_line` varchar(255) NOT NULL,
   `province` varchar(50) DEFAULT NULL,
   `phone` varchar(20) NOT NULL,
-  `status` enum('pending','accepted','delivered','cancelled') NOT NULL DEFAULT 'pending',
-  `scheduled_at` date NOT NULL,
+  `schedule_date` date NOT NULL,
+  `product_name` varchar(255) NOT NULL,
   `total_amount` int(11) NOT NULL DEFAULT 0,
-  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
+  `ordered_at` datetime NOT NULL DEFAULT current_timestamp(),
+  `status` enum('pending','accepted','completed') NOT NULL,
   `updated_at` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `orders`
+--
+
+INSERT INTO `orders` (`id`, `buyer_id`, `supplier_id`, `recipient_name`, `address_line`, `province`, `phone`, `schedule_date`, `product_name`, `total_amount`, `ordered_at`, `status`, `updated_at`) VALUES
+(5, 67, 0, 'jed', '221 Boulivard st.', 'pangasinan', 'asd', '2025-10-22', 'cement', 250, '0000-00-00 00:00:00', 'pending', '2025-10-17 16:47:35'),
+(6, 67, 0, 'johann', 'Bari mangaldan', 'pangasinan', '099999999', '2025-09-04', 'cement', 450, '0000-00-00 00:00:00', 'pending', '2025-10-17 16:49:36');
 
 -- --------------------------------------------------------
 
@@ -83,9 +92,7 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`id`, `user_id`, `order_id`, `product_id`, `product_name`, `description`, `unit_price`, `quantity`, `file`, `line_total`, `created_at`, `updated_at`) VALUES
-(31, 68, 0, 0, 'Asdaasda', 'asasd', 22333, 2233, '20251017_075511_6c2e3b8191.png', 49869589, '2025-10-17 13:43:37', '2025-10-17 13:55:11'),
-(32, 68, 0, 0, 'Asd', 'adasd', 2, 2, '20251017_075524_b12c2aa0.png', 4, '2025-10-17 13:55:24', '2025-10-17 13:56:03'),
-(33, 68, 0, 0, 'aasd', '333', 333, 3, '20251017_075548_8dc7e909.png', 999, '2025-10-17 13:55:48', '2025-10-17 13:55:48');
+(45, 69, 0, 0, 'cement', 'good quality', 200, 100, '20251017_104710_403ce702.jpg', 20000, '2025-10-17 16:47:10', '2025-10-17 16:47:10');
 
 -- --------------------------------------------------------
 
@@ -108,7 +115,7 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id`, `fname`, `lname`, `email`, `password`, `role`) VALUES
 (67, 'jed', 'yulo', 'jed@gmail.com', '$2y$10$Lw4an8bcBHW89h97t1IJK.pVqdJykA8dq2o/uxgkIHojF1/qhbQpu', 'buyer'),
-(68, 'jed', 'yulo', 'seller@gmail.com', '$2y$10$GKSuk5bj1mQSXY/vRzCTFu4eKsQgG6sc0Aqqj24xHItu9VuME13TO', 'seller');
+(69, 'jed', 'yulo', 'seller@gmail.com', '$2y$10$LLu6WieWQ5TpswuXBvTOzO0z1KTdrbZEedtgmW6k176BsaIieBRRG', 'seller');
 
 --
 -- Indexes for dumped tables
@@ -118,7 +125,8 @@ INSERT INTO `users` (`id`, `fname`, `lname`, `email`, `password`, `role`) VALUES
 -- Indexes for table `orders`
 --
 ALTER TABLE `orders`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_orders_buyer` (`buyer_id`);
 
 --
 -- Indexes for table `products`
@@ -142,19 +150,19 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=69;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=70;
 
 --
 -- Constraints for dumped tables
