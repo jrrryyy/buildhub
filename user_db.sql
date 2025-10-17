@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 15, 2025 at 05:06 PM
+-- Generation Time: Oct 17, 2025 at 08:13 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -28,7 +28,7 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `orders` (
-  `id` bigint(20) UNSIGNED NOT NULL,
+  `id` int(11) UNSIGNED NOT NULL,
   `buyer_id` int(10) UNSIGNED NOT NULL,
   `supplier_id` int(10) UNSIGNED NOT NULL,
   `recipient_name` varchar(100) NOT NULL,
@@ -41,35 +41,6 @@ CREATE TABLE `orders` (
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
   `updated_at` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `order_items`
---
-
-CREATE TABLE `order_items` (
-  `id` int(11) UNSIGNED NOT NULL,
-  `user_id` int(11) UNSIGNED NOT NULL,
-  `order_id` int(11) UNSIGNED NOT NULL,
-  `product_id` int(11) UNSIGNED NOT NULL,
-  `product_name` varchar(255) NOT NULL,
-  `description` varchar(255) NOT NULL,
-  `unit_price` int(11) NOT NULL,
-  `quantity` int(11) NOT NULL,
-  `file` varchar(255) NOT NULL,
-  `line_total` int(11) NOT NULL,
-  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
-  `updated_at` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `order_items`
---
-
-INSERT INTO `order_items` (`id`, `user_id`, `order_id`, `product_id`, `product_name`, `description`, `unit_price`, `quantity`, `file`, `line_total`, `created_at`, `updated_at`) VALUES
-(13, 57, 0, 0, 'chocolate', 'asdasd', 100, 100, 'umayno.jpg', 10000, '2025-10-15 20:30:42', '2025-10-15 20:30:42'),
-(14, 57, 0, 0, 'chocolate', 'dad', 100, 100, 'yeseo.jpg', 10000, '2025-10-15 20:30:56', '2025-10-15 20:30:56');
 
 -- --------------------------------------------------------
 
@@ -93,29 +64,28 @@ CREATE TABLE `order_reschedules` (
 --
 
 CREATE TABLE `products` (
-  `id` int(11) NOT NULL,
+  `id` int(11) UNSIGNED NOT NULL,
+  `user_id` int(11) UNSIGNED NOT NULL,
+  `order_id` int(11) UNSIGNED NOT NULL,
+  `product_id` int(11) UNSIGNED NOT NULL,
   `product_name` varchar(255) NOT NULL,
-  `weight` int(11) NOT NULL,
-  `price` int(11) NOT NULL,
+  `description` varchar(255) NOT NULL,
+  `unit_price` int(11) NOT NULL,
   `quantity` int(11) NOT NULL,
-  `delivery` int(11) NOT NULL,
-  `file` varchar(50) NOT NULL
+  `file` varchar(255) NOT NULL,
+  `line_total` int(11) NOT NULL,
+  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
+  `updated_at` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `products`
 --
 
-INSERT INTO `products` (`id`, `product_name`, `weight`, `price`, `quantity`, `delivery`, `file`) VALUES
-(39, 'pogi', 69, 69, 69, 0, '3 layer switch.png'),
-(42, 'asd', 234, 324, 234, 0, 'day6.mp4'),
-(43, 'asd', 234, 324, 234, 0, 'umayno.jpg'),
-(44, 'Asd', 45, 53, 554, 0, 'wp.jpg'),
-(45, '', 0, 0, 0, 0, '136134480_104490174948609_970177375971885239_n.jpg'),
-(46, 'pogi', 69, 69, 69, 22, '119037952_756511421589148_2267977214469719398_n.jp'),
-(47, '', 0, 0, 0, 0, 'wp.jpg'),
-(48, 'name', 2, 100, 2, 2, '168428271_279456313625537_7799711334461686546_n.jp'),
-(49, '', 0, 23, 0, 23, '136134480_104490174948609_970177375971885239_n.jpg');
+INSERT INTO `products` (`id`, `user_id`, `order_id`, `product_id`, `product_name`, `description`, `unit_price`, `quantity`, `file`, `line_total`, `created_at`, `updated_at`) VALUES
+(31, 68, 0, 0, 'Asdaasda', 'asasd', 22333, 2233, '20251017_075511_6c2e3b8191.png', 49869589, '2025-10-17 13:43:37', '2025-10-17 13:55:11'),
+(32, 68, 0, 0, 'Asd', 'adasd', 2, 2, '20251017_075524_b12c2aa0.png', 4, '2025-10-17 13:55:24', '2025-10-17 13:56:03'),
+(33, 68, 0, 0, 'aasd', '333', 333, 3, '20251017_075548_8dc7e909.png', 999, '2025-10-17 13:55:48', '2025-10-17 13:55:48');
 
 -- --------------------------------------------------------
 
@@ -137,27 +107,25 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `fname`, `lname`, `email`, `password`, `role`) VALUES
-(55, 'buyer', 'Yulo', 'seller@gmail.com', '$2y$10$dWmnuHRwGoLl/zplPOpBle9DizlCGaLMtwe5kzAMwLZgIuy2segPe', 'seller'),
-(56, 'buyer', '', 'haha@haha', '$2y$10$f7WqZLyyODKCymKl7tS..e3NenNVc/RWN2LkbROM26hrSGecdvovO', 'buyer'),
-(57, '', '', 'mama@mama', '$2y$10$0yF3VLvlsWHO/jtOGxbVqejh1IVS54GK.jKl2iM9sygRG/Nx0vJvi', 'seller'),
-(58, 'seller', '', 'jaja@jaja', '$2y$10$H0y01HNNInfnlDh5cDWX7.LZbWOMw.YK3vVjR52QBIHU8RpHd13gy', 'seller');
+(67, 'jed', 'yulo', 'jed@gmail.com', '$2y$10$Lw4an8bcBHW89h97t1IJK.pVqdJykA8dq2o/uxgkIHojF1/qhbQpu', 'buyer'),
+(68, 'jed', 'yulo', 'seller@gmail.com', '$2y$10$GKSuk5bj1mQSXY/vRzCTFu4eKsQgG6sc0Aqqj24xHItu9VuME13TO', 'seller');
 
 --
 -- Indexes for dumped tables
 --
 
 --
--- Indexes for table `order_items`
+-- Indexes for table `orders`
 --
-ALTER TABLE `order_items`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `idx_order_items_user_id` (`user_id`);
+ALTER TABLE `orders`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `products`
 --
 ALTER TABLE `products`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `idx_order_items_user_id` (`user_id`);
 
 --
 -- Indexes for table `users`
@@ -171,31 +139,31 @@ ALTER TABLE `users`
 --
 
 --
--- AUTO_INCREMENT for table `order_items`
+-- AUTO_INCREMENT for table `orders`
 --
-ALTER TABLE `order_items`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+ALTER TABLE `orders`
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=59;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=69;
 
 --
 -- Constraints for dumped tables
 --
 
 --
--- Constraints for table `order_items`
+-- Constraints for table `products`
 --
-ALTER TABLE `order_items`
+ALTER TABLE `products`
   ADD CONSTRAINT `fk_order_items_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
