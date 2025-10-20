@@ -25,7 +25,7 @@
       </div>
 
       <div class="py-3">
-        <a href="order.php" class="block px-5 py-2 text-sm text-gray-700 hover:bg-gray-100">👤 My Profile</a>
+        <a href="../admin/profile.php" class="block px-5 py-2 text-sm text-gray-700 hover:bg-gray-100">👤 My Profile</a>
         <a href="../admin/settings.php" class="block px-5 py-2 text-sm text-gray-700 hover:bg-gray-100">🔒 Change Password</a>
         <button onclick="showSupportInfo()" class="w-full text-left px-5 py-2 text-sm text-gray-700 hover:bg-gray-100">🛠 Support</button>
         <div class="border-t my-2"></div>

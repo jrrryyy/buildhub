@@ -1,6 +1,10 @@
 <?php
 session_start();
 $q = trim($_GET['q'] ?? '');
+
+// Set timezone to Philippines for consistent date display
+date_default_timezone_set('Asia/Manila');
+
 /* ---------- DB (optional) ---------- */
 $conn = mysqli_connect("localhost","root","","user_db");
 if (!$conn) { /* no hard die — page still works without DB */ }
@@ -12,8 +16,8 @@ function fmtDate($s){ if(!$s) return "—"; $t=strtotime($s); return $t?date("M 
 function fmtDateTime($s){ if(!$s) return "—"; $t=strtotime($s); return $t?date("M d, Y \\a\\t h:i A",$t):"—"; }
 function badgeClasses($status){
   $s = strtolower($status ?? '');
-  if ($s==='completed') return 'bg-blue-100 text-blue-700';
-  if ($s==='accepted')  return 'bg-green-100 text-green-700';
+  if ($s==='completed') return 'bg-green-100 text-green-700';
+  if ($s==='accepted')  return 'bg-blue-100 text-blue-700';
   if ($s==='cancelled') return 'bg-red-100 text-red-700';
   return 'bg-yellow-100 text-yellow-800';
 }
@@ -88,9 +92,9 @@ function renderCard($row){
     <!-- (existing) Reschedule -->
 
 
-    <!-- (existing) Cancel -->
+    <!-- Cancel -->
     <form action="cancel.php" method="POST" onsubmit="return confirm('Cancel this order?');">
-      <input type="hidden" name="product_id" value="<?php echo h($id); ?>">
+      <input type="hidden" name="order_id" value="<?php echo h($id); ?>">
       <button class="inline-flex items-center gap-2 rounded-md px-4 py-2 text-sm font-medium text-red-600 border border-red-300 bg-red-50 hover:bg-red-100">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-width="1.5" d="M6 6l12 12M18 6l-12 12"/>
@@ -123,8 +127,7 @@ function renderCard($row){
 }
 
 /* ---------- collect DB rows from ORDERS (for SELLER) ---------- */
-/* ---------- collect DB rows from ORDERS (for SELLER) ---------- */
-$buckets = ['Pending'=>[], 'Accepted'=>[], 'Completed'=>[]];
+$buckets = ['Pending'=>[], 'Accepted'=>[], 'Completed'=>[], 'Cancelled'=>[]];
 
 $sellerId = (int)($_SESSION['user_id'] ?? 0);
 if ($conn && $sellerId > 0) {
@@ -187,7 +190,7 @@ if ($conn && $sellerId > 0) {
       );
 
       $s = strtolower($r['status'] ?? 'pending');
-      $k = ($s==='accepted' ? 'Accepted' : ($s==='completed' ? 'Completed' : 'Pending'));
+      $k = ($s==='accepted' ? 'Accepted' : ($s==='completed' ? 'Completed' : ($s==='cancelled' ? 'Cancelled' : 'Pending')));
       $buckets[$k][] = $r;
     }
     mysqli_stmt_close($stmt);
@@ -225,7 +228,7 @@ if ($conn && $sellerId > 0) {
   />
 </form>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-6">
           <section>
             <h2 class="text-xl font-bold">Pending Orders</h2>
             <?php if (empty($buckets['Pending'])): ?>
@@ -245,6 +248,13 @@ if ($conn && $sellerId > 0) {
             <?php if (empty($buckets['Completed'])): ?>
               <p class="text-sm text-slate-500 mt-4">No completed orders.</p>
             <?php else: foreach ($buckets['Completed'] as $row) { renderCard($row); } endif; ?>
+          </section>
+
+          <section>
+            <h2 class="text-xl font-bold">Cancelled Orders</h2>
+            <?php if (empty($buckets['Cancelled'])): ?>
+              <p class="text-sm text-slate-500 mt-4">No cancelled orders.</p>
+            <?php else: foreach ($buckets['Cancelled'] as $row) { renderCard($row); } endif; ?>
           </section>
         </div>
       </div>

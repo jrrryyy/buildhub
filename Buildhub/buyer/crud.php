@@ -14,7 +14,9 @@ $grand          = (float)($_POST['grand'] ?? 0);
 $total_amount   = (int)round($grand);
 
 $buyer_id = (int)($_SESSION['user_id'] ?? 0);
-$ordered_at = date('Y-m-d H:i:s');
+// Set timezone to Philippines and get current timestamp
+date_default_timezone_set('Asia/Manila');
+$ordered_at = date('Y-m-d H:i:s'); // Current timestamp when order is placed
 $status = 'pending';
 
 // 2) Basic checks

@@ -76,7 +76,6 @@ $grand    = $subtotal + $delivery;
 <input type="hidden" name="delivery"     value="<?= htmlspecialchars($delivery) ?>">
 <input type="hidden" name="subtotal"     value="<?= htmlspecialchars($subtotal) ?>">
 <input type="hidden" name="grand"        value="<?= htmlspecialchars($grand) ?>">
-<input type="hidden" name="ordered_at"   value="<?= date('Y-m-d') ?>">
 
 
 

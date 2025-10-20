@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 17, 2025 at 07:58 PM
+-- Generation Time: Oct 20, 2025 at 07:38 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -111,6 +111,7 @@ CREATE TABLE `users` (
   `fname` varchar(255) NOT NULL,
   `lname` varchar(2255) NOT NULL,
   `email` varchar(255) NOT NULL,
+  `profile_picture` varchar(255) DEFAULT NULL,
   `password` varchar(255) DEFAULT NULL,
   `role` enum('buyer','seller') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -119,11 +120,11 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `fname`, `lname`, `email`, `password`, `role`) VALUES
-(67, 'jed', 'yulo', 'jed@gmail.com', '$2y$10$Lw4an8bcBHW89h97t1IJK.pVqdJykA8dq2o/uxgkIHojF1/qhbQpu', 'buyer'),
-(69, 'jed', 'yulo', 'seller@gmail.com', '$2y$10$LLu6WieWQ5TpswuXBvTOzO0z1KTdrbZEedtgmW6k176BsaIieBRRG', 'seller'),
-(70, 'status', 'Yulo', 'buyer@gmail.com', '$2y$10$SeU/G07lw.bSw9BDcab5f.8BQI2693U7mzXGOZ118aRhqKbnwAOk6', 'buyer'),
-(71, 'johann', 'ba kamo?', 'ken@gmail.com', '$2y$10$EGWjlEjc/hDYEAuW5dzuyOhJCsTJr7LbdDERSnfsVuUSrA3OwRUW2', 'seller');
+INSERT INTO `users` (`id`, `fname`, `lname`, `email`, `profile_picture`, `password`, `role`) VALUES
+(67, 'jed', 'yulo', 'jed@gmail.com', NULL, '$2y$10$Lw4an8bcBHW89h97t1IJK.pVqdJykA8dq2o/uxgkIHojF1/qhbQpu', 'buyer'),
+(69, 'jed', 'yulo', 'seller@gmail.com', NULL, '$2y$10$LLu6WieWQ5TpswuXBvTOzO0z1KTdrbZEedtgmW6k176BsaIieBRRG', 'seller'),
+(70, 'status', 'Yulo', 'buyer@gmail.com', NULL, '$2y$10$SeU/G07lw.bSw9BDcab5f.8BQI2693U7mzXGOZ118aRhqKbnwAOk6', 'buyer'),
+(71, 'johann', 'ba kamo?', 'ken@gmail.com', NULL, '$2y$10$EGWjlEjc/hDYEAuW5dzuyOhJCsTJr7LbdDERSnfsVuUSrA3OwRUW2', 'seller');
 
 --
 -- Indexes for dumped tables
