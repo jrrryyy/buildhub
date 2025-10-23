@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 20, 2025 at 07:38 AM
+-- Generation Time: Oct 23, 2025 at 02:01 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -39,7 +39,7 @@ CREATE TABLE `orders` (
   `product_name` varchar(255) NOT NULL,
   `total_amount` int(11) NOT NULL DEFAULT 0,
   `ordered_at` datetime NOT NULL DEFAULT current_timestamp(),
-  `status` enum('pending','accepted','completed') NOT NULL,
+  `status` enum('pending','accepted','completed','cancelled') NOT NULL,
   `updated_at` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -48,12 +48,7 @@ CREATE TABLE `orders` (
 --
 
 INSERT INTO `orders` (`id`, `buyer_id`, `supplier_id`, `recipient_name`, `address_line`, `province`, `phone`, `schedule_date`, `product_name`, `total_amount`, `ordered_at`, `status`, `updated_at`) VALUES
-(17, 67, 69, 'johann', 'Bari mangaldan', 'pangasinan', '90909090', '2025-10-18', 'cement', 51, '0000-00-00 00:00:00', 'completed', '2025-10-18 01:20:31'),
-(18, 67, 69, 'johann', 'Bari mangaldan', 'pangasinan', '90909090', '2025-10-18', 'cement', 51, '0000-00-00 00:00:00', 'accepted', '2025-10-18 01:21:41'),
-(19, 67, 69, 'johann', 'Bari mangaldan', 'pangasinan', '90909090', '2025-10-18', 'cement', 51, '0000-00-00 00:00:00', 'accepted', '2025-10-18 01:27:43'),
-(20, 67, 69, 'johann', 'Bari mangaldan', 'pangasinan', '90909090', '2025-10-18', 'haha', 51, '0000-00-00 00:00:00', 'accepted', '2025-10-18 01:40:02'),
-(21, 67, 69, 'johann', 'Bari mangaldan', 'pangasinan', '90909090', '2025-10-18', 'haha', 51, '0000-00-00 00:00:00', 'pending', '2025-10-18 01:54:44'),
-(22, 67, 69, 'johann', 'Bari mangaldan', 'pangasinan', '90909090', '2025-10-18', 'haha', 51, '0000-00-00 00:00:00', 'pending', '2025-10-18 01:56:29');
+(35, 73, 74, 'johann', '#221 Boulivard st.', 'pangasinan', '09484694167', '2025-10-29', 'cement', 300, '2025-10-23 19:58:00', 'pending', '2025-10-23 19:59:15');
 
 -- --------------------------------------------------------
 
@@ -96,9 +91,7 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`id`, `user_id`, `order_id`, `product_id`, `product_name`, `description`, `unit_price`, `quantity`, `file`, `line_total`, `created_at`, `updated_at`) VALUES
-(47, 71, 0, 0, 'cement', 'good quality', 300, 100, '20251017_164745_0579b542.jpg', 30000, '2025-10-17 22:47:45', '2025-10-17 22:47:58'),
-(49, 69, 0, 0, 'cement', '', 1, 1, '20251017_184424_9a23637260.jpg', 1, '2025-10-18 00:44:09', '2025-10-18 00:44:24'),
-(50, 69, 0, 0, 'haha', '', 1, 1, '20251017_184549_c95d1a14.jpg', 1, '2025-10-18 00:45:49', '2025-10-18 01:37:05');
+(51, 74, 0, 0, 'cement', 'good quality', 250, 100, '20251023_120011_ef2de7f8.jpg', 25000, '2025-10-23 18:00:11', '2025-10-23 18:00:11');
 
 -- --------------------------------------------------------
 
@@ -113,7 +106,7 @@ CREATE TABLE `users` (
   `email` varchar(255) NOT NULL,
   `profile_picture` varchar(255) DEFAULT NULL,
   `password` varchar(255) DEFAULT NULL,
-  `role` enum('buyer','seller') NOT NULL
+  `role` enum('buyer','seller','admin') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -121,10 +114,9 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `fname`, `lname`, `email`, `profile_picture`, `password`, `role`) VALUES
-(67, 'jed', 'yulo', 'jed@gmail.com', NULL, '$2y$10$Lw4an8bcBHW89h97t1IJK.pVqdJykA8dq2o/uxgkIHojF1/qhbQpu', 'buyer'),
-(69, 'jed', 'yulo', 'seller@gmail.com', NULL, '$2y$10$LLu6WieWQ5TpswuXBvTOzO0z1KTdrbZEedtgmW6k176BsaIieBRRG', 'seller'),
-(70, 'status', 'Yulo', 'buyer@gmail.com', NULL, '$2y$10$SeU/G07lw.bSw9BDcab5f.8BQI2693U7mzXGOZ118aRhqKbnwAOk6', 'buyer'),
-(71, 'johann', 'ba kamo?', 'ken@gmail.com', NULL, '$2y$10$EGWjlEjc/hDYEAuW5dzuyOhJCsTJr7LbdDERSnfsVuUSrA3OwRUW2', 'seller');
+(73, 'bea', 'yulo', 'buyer@gmail.com', 'profile_73_1761213585.jpg', '$2y$10$pzFcyYTqrImY2rtpqCOGWul4MtHVBD3hJm5ydKdzRAUbFtAWkQAPe', 'buyer'),
+(74, 'jed', 'yulo', 'seller@gmail.com', 'profile_74_1761213558.jpg', '$2y$10$AEt6q3mv/dbSHHT1CGvF4.9CQ11DNpeKK1aHPIwcr9ovp1beY7nei', 'seller'),
+(77, 'Admin', 'admin', 'admin@gmail.com', 'profile_77_1761218048.jpg', '$2y$10$/4KpltRyZLJ5a8jmX0N5DOU6bXt71omR2rsdD6o0QEnuLVpyamisy', 'admin');
 
 --
 -- Indexes for dumped tables
@@ -160,19 +152,19 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
 
 --
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=72;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=78;
 
 --
 -- Constraints for dumped tables

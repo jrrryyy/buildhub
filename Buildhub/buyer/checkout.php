@@ -12,6 +12,7 @@ if ($product_id <= 0) {
   header('Location: orders.php?error=no_product'); // or wherever your browse page is
   exit;
 }
+
 /* Always set safe defaults so GET won't throw notices */
 $product_name = $_POST['product_name'] ?? '';
 $price        = (float)($_POST['price'] ?? 0);
@@ -27,6 +28,31 @@ $grand    = $subtotal + $delivery;
 // if ($product_name === '' && $_SERVER['REQUEST_METHOD'] !== 'POST') {
 //   header('Location: ../buyer/browse.php'); exit;
 // }
+
+$conn = mysqli_connect("localhost", "root", "", "user_db");
+if (!$conn) { 
+  $conn = null; // Handle gracefully if DB is not available
+}
+// ✅ Define sellerId from session (fixes 'undefined variable' and missing profile)
+$sellerId = $_SESSION['user_id'] ?? 0;
+
+$userData = null;
+if ($conn && $sellerId > 0) {
+  $sql = "SELECT fname, lname, email, profile_picture FROM users WHERE id = ? LIMIT 1";
+  if ($stmt = mysqli_prepare($conn, $sql)) {
+    mysqli_stmt_bind_param($stmt, 'i', $sellerId);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+    $userData = $result->fetch_assoc();
+    mysqli_stmt_close($stmt);
+  }
+}
+
+// ✅ Correct fallback logic
+$profilePicture = $userData['profile_picture'] ?? null;
+$profilePicturePath = $profilePicture
+  ? "../images/profiles/" . $profilePicture
+  : "../images/default-profile.png";
 ?>
 <!DOCTYPE html>
 <html lang="en">

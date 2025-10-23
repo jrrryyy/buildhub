@@ -150,6 +150,24 @@ $firstDayOfWeek = $currentDate->format('w'); // 0 = Sunday, 1 = Monday, etc.
 
 // Adjust first day to start from Monday (1) instead of Sunday (0)
 $firstDayOfWeek = ($firstDayOfWeek == 0) ? 6 : $firstDayOfWeek - 1;
+
+// Get user profile picture
+
+//view profile picture
+$userData = null;
+if ($conn && $sellerId > 0) {
+  $sql = "SELECT fname, lname, email, profile_picture FROM users WHERE id = ? LIMIT 1";
+  if ($stmt = mysqli_prepare($conn, $sql)) {
+    mysqli_stmt_bind_param($stmt, 'i', $sellerId);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+    $userData = $result->fetch_assoc();
+    mysqli_stmt_close($stmt);
+  }
+}
+
+$profilePicture = $userData['profile_picture'] ?? null;
+$profilePicturePath = $profilePicture ? "../images/profiles/" . $profilePicture : null;
 ?>
 <!DOCTYPE html>
 <html lang="en">

@@ -3,7 +3,7 @@
   <div class="relative">
       <h1 class="text-gray-500 text-xs md:text-sm font-semibold px-4 mt-4 mb-2 hidden md:block">Buyer Menu</h1>
     <button id="profileButton" class="flex items-center space-x-3 focus:outline-none">
-      <img src="../images/korina.png" alt="user-image" class="w-10 h-10 rounded-full border border-gray-300" />
+      <img src="<?= htmlspecialchars($profilePicturePath) ?>" alt="user-image" class="w-10 h-10 rounded-full border border-white" />
       <div class="hidden md:block text-left">
         <h4 class="text-sm font-medium text-gray-800"><?= htmlspecialchars($_SESSION['fname'] ?? 'User') ?></h4>
         <span class="text-xs text-gray-500"><?= htmlspecialchars($_SESSION['email'] ?? '') ?></span>
@@ -16,7 +16,7 @@
     <div id="profileDropdown" class="hidden absolute right-0 mt-2 w-60 bg-white border border-gray-200 rounded-lg shadow-lg z-50">
       <div class="px-5 py-4 border-b bg-yellow-400 rounded-t-lg">
         <div class="flex items-center">
-          <img src="../images/korina.png" alt="user-image" class="w-10 h-10 rounded-full border border-white" />
+          <img src="<?= htmlspecialchars($profilePicturePath) ?>" alt="user-image" class="w-10 h-10 rounded-full border border-white" />
           <div class="ml-3">
             <h4 class="text-sm font-semibold text-black"><?= htmlspecialchars($_SESSION['fname'] ?? 'User') ?></h4>
             <span class="text-xs text-gray-800"><?= htmlspecialchars($_SESSION['email'] ?? '') ?></span>

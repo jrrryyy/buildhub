@@ -98,10 +98,12 @@ if ($conn && $buyerId > 0) {
 $calendarOrders = [];
 $currentMonth = date('Y-m');
 if ($conn && $buyerId > 0) {
-  $sql = "SELECT DAY(schedule_date) as day, COUNT(*) as count, GROUP_CONCAT(product_name) as products
-          FROM orders 
-          WHERE buyer_id = ? AND DATE_FORMAT(schedule_date, '%Y-%m') = ?
-          GROUP BY DAY(schedule_date)";
+ $sql = "SELECT DAY(schedule_date) as day, COUNT(*) as count, GROUP_CONCAT(product_name) as products
+        FROM orders 
+        WHERE buyer_id = ? 
+          AND DATE_FORMAT(schedule_date, '%Y-%m') = ? 
+          AND status != 'cancelled'
+        GROUP BY DAY(schedule_date)";
   if ($stmt = mysqli_prepare($conn, $sql)) {
     mysqli_stmt_bind_param($stmt, 'is', $buyerId, $currentMonth);
     mysqli_stmt_execute($stmt);
@@ -126,6 +128,23 @@ $firstDayOfWeek = $currentDate->format('w'); // 0 = Sunday, 1 = Monday, etc.
 
 // Adjust first day to start from Monday (1) instead of Sunday (0)
 $firstDayOfWeek = ($firstDayOfWeek == 0) ? 6 : $firstDayOfWeek - 1;
+
+$sellerId = $_SESSION['user_id'] ?? 0;
+// Fetch user data for profile dropdown
+$userData = null;
+if ($conn && $sellerId > 0) {
+  $sql = "SELECT fname, lname, email, profile_picture FROM users WHERE id = ? LIMIT 1";
+  if ($stmt = mysqli_prepare($conn, $sql)) {
+    mysqli_stmt_bind_param($stmt, 'i', $sellerId);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+    $userData = $result->fetch_assoc();
+    mysqli_stmt_close($stmt);
+  }
+}
+
+$profilePicture = $userData['profile_picture'] ?? null;
+$profilePicturePath = $profilePicture ? "../images/profiles/" . $profilePicture : null;
 ?>
 <!DOCTYPE html>
 <html lang="en">

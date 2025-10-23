@@ -1,7 +1,7 @@
 <div class="top-0 z-[10] bg-white border-b border-gray-200 px-6 py-4 flex justify-end items-center transition-all duration-300 lg:ml-640">
 
   <div class="relative">
-      <h1 class="text-gray-500 text-xs md:text-sm font-semibold px-4 mt-4 mb-2 hidden md:block">Seller Menu</h1>
+      <h1 class="text-gray-500 text-xs md:text-sm font-semibold px-4 mt-4 mb-2 hidden md:block">Admin</h1>
     <button id="profileButton" class="flex items-center space-x-3 focus:outline-none">
       <img src="<?= htmlspecialchars($profilePicturePath) ?>" alt="user-image" class="w-10 h-10 rounded-full border border-white" />
       <div class="hidden md:block text-left">
@@ -25,8 +25,8 @@
       </div>
 
       <div class="py-3">
-        <a href="../admin/profile.php" class="block px-5 py-2 text-sm text-gray-700 hover:bg-gray-100">👤 My Profile</a>
-        <a href="../admin/settings.php" class="block px-5 py-2 text-sm text-gray-700 hover:bg-gray-100">🔒 Change Password</a>
+        <a href="../creatoradmin/profile.php" class="block px-5 py-2 text-sm text-gray-700 hover:bg-gray-100">👤 My Profile</a>
+        <a href="../creatoradmin/settings.php" class="block px-5 py-2 text-sm text-gray-700 hover:bg-gray-100">🔒 Change Password</a>
         <button onclick="showSupportInfo()" class="w-full text-left px-5 py-2 text-sm text-gray-700 hover:bg-gray-100">🛠 Support</button>
         <div class="border-t my-2"></div>
         <a href="../nav/logout.php" class="block px-5 py-2 text-sm font-medium text-red-600 hover:bg-red-50">🚪 Log Out</a>

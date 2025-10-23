@@ -65,16 +65,23 @@ $sql = "INSERT INTO orders
   (buyer_id, supplier_id, recipient_name, address_line, province, phone, schedule_date,
    product_name, total_amount, ordered_at, status)
   VALUES (?,?,?,?,?,?,?,?,?,?,?)";
+
 $stmt = $conn->prepare($sql);
-if (!$stmt) { http_response_code(500); exit('DB prepare error: '.$conn->error); }
+if (!$stmt) {
+  http_response_code(500);
+  exit('DB prepare error: '.$conn->error);
+}
 
 $stmt->bind_param(
-  'iisssssssis',
+  'iissssssdss',
   $buyer_id, $supplier_id, $recipient_name, $address_line, $province,
   $phone, $schedule_date, $product_name, $total_amount, $ordered_at, $status
 );
 
-if (!$stmt->execute()) { http_response_code(500); exit('DB execute error: '.$stmt->error); }
+if (!$stmt->execute()) {
+  http_response_code(500);
+  exit('DB execute error: '.$stmt->error);
+}
 $stmt->close();
 
 header('Location: ./myorders.php?placed=1');

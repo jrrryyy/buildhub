@@ -168,7 +168,22 @@ if ($conn && $buyerId > 0) {
     mysqli_stmt_close($stmt);
   }
 }
+$sellerId = $_SESSION['user_id'] ?? 0;
+// Fetch user data for profile dropdown
+$userData = null;
+if ($conn && $sellerId > 0) {
+  $sql = "SELECT fname, lname, email, profile_picture FROM users WHERE id = ? LIMIT 1";
+  if ($stmt = mysqli_prepare($conn, $sql)) {
+    mysqli_stmt_bind_param($stmt, 'i', $sellerId);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+    $userData = $result->fetch_assoc();
+    mysqli_stmt_close($stmt);
+  }
+}
 
+$profilePicture = $userData['profile_picture'] ?? null;
+$profilePicturePath = $profilePicture ? "../images/profiles/" . $profilePicture : null;
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -289,13 +304,29 @@ if ($conn && $buyerId > 0) {
 </body>
 <script>
   const search = document.querySelector('input[name="q"]');
-  if (search) {
-    let t;
-    search.addEventListener('input', () => {
-      clearTimeout(t);
-      t = setTimeout(() => search.form.submit(), 350);
-    });
-  }
+if (search) {
+  let timer;
+  search.addEventListener('input', () => {
+    clearTimeout(timer);
+    timer = setTimeout(async () => {
+      const query = search.value.trim();
+      const url = new URL(window.location.href);
+      url.searchParams.set('q', query);
+
+      // fetch partial results via AJAX, no full reload
+      const res = await fetch(url, { headers: { 'X-Requested-With': 'fetch' } });
+      const text = await res.text();
+
+      // extract only the order grid from response and replace the old one
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(text, 'text/html');
+      const newGrid = doc.querySelector('.grid');
+      const oldGrid = document.querySelector('.grid');
+      if (newGrid && oldGrid) oldGrid.replaceWith(newGrid);
+    }, 400);
+  });
+}
+
 
   // Modal functionality
   const modal = document.getElementById('rescheduleModal');

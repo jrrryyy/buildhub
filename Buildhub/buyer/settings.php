@@ -1,6 +1,33 @@
 <?php
 session_start();
 
+// Get logged-in user's ID
+$sellerId = $_SESSION['user_id'] ?? 0;
+
+// Connect to database
+$conn = mysqli_connect("localhost", "root", "", "user_db");
+if (!$conn) { 
+  $conn = null; // Handle gracefully if DB is not available
+}
+
+$userData = null;
+
+// Fetch user data if logged in
+if ($conn && $sellerId > 0) {
+  $sql = "SELECT fname, lname, email, profile_picture FROM users WHERE id = ? LIMIT 1";
+  if ($stmt = mysqli_prepare($conn, $sql)) {
+    mysqli_stmt_bind_param($stmt, 'i', $sellerId);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+    $userData = $result->fetch_assoc();
+    mysqli_stmt_close($stmt);
+  }
+}
+
+// Prepare profile picture path
+$profilePicture = $userData['profile_picture'] ?? null;
+$profilePicturePath = $profilePicture ? "../images/profiles/" . $profilePicture : "../images/default-profile.png"; // fallback image
+
 /* read flash, then clear just that key */
 $flash_success = $_SESSION['success'] ?? '';
 unset($_SESSION['success']); // keep other session data like 'email'
@@ -9,23 +36,7 @@ function displayError($msg) {
     return !empty($msg) ? '<p class="error-message">'.$msg.'</p>' : '';
 }
 ?>
-<?php if (isset($_SESSION['success'])): ?>
-   
-        <?php 
-            echo $_SESSION['success']; 
-            unset($_SESSION['success']); // clear after showing
-        ?>
-    
-<?php endif; ?>
 
-<?php if (isset($_SESSION['error'])): ?>
-
-        <?php 
-            echo $_SESSION['error']; 
-            unset($_SESSION['error']); // clear after showing
-        ?>
-
-<?php endif; ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>

@@ -91,12 +91,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     exit;
   }
   
-  /* Update the order schedule date */
-  $update = $conn->prepare("UPDATE orders SET schedule_date = ? WHERE id = ? AND buyer_id = ?");
-  $update->bind_param('sii', $newScheduleDate, $orderId, $buyerId);
-  $update->execute();
-  $affected = $update->affected_rows;
-  $update->close();
+
+/* Update the order schedule date AND reset status to pending */
+$update = $conn->prepare("UPDATE orders SET schedule_date = ?, status = 'pending' WHERE id = ? AND buyer_id = ?");
+$update->bind_param('sii', $newScheduleDate, $orderId, $buyerId);
+$update->execute();
+$affected = $update->affected_rows;
+$update->close();
+
   
   if ($affected > 0) {
     echo json_encode(['success' => true, 'message' => 'Order rescheduled successfully to ' . date('M d, Y', $newDate)]);

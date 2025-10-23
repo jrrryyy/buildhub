@@ -1,20 +1,42 @@
 <?php
 session_start();
-$conn = mysqli_connect("localhost","root","","user_db");
+$conn = mysqli_connect("localhost", "root", "", "user_db");
+
+// ✅ Define sellerId from session (fixes 'undefined variable' and missing profile)
+$sellerId = $_SESSION['user_id'] ?? 0;
+
+$userData = null;
+if ($conn && $sellerId > 0) {
+  $sql = "SELECT fname, lname, email, profile_picture FROM users WHERE id = ? LIMIT 1";
+  if ($stmt = mysqli_prepare($conn, $sql)) {
+    mysqli_stmt_bind_param($stmt, 'i', $sellerId);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+    $userData = $result->fetch_assoc();
+    mysqli_stmt_close($stmt);
+  }
+}
+
+// ✅ Correct fallback logic
+$profilePicture = $userData['profile_picture'] ?? null;
+$profilePicturePath = $profilePicture
+  ? "../images/profiles/" . $profilePicture
+  : "../images/default-profile.png"; // fallback image
 
 $sql = "
   SELECT p.*,
          TRIM(CONCAT(
-           COALESCE(u.fname, u.fname, ''),
+           COALESCE(u.fname, ''),
            ' ',
-           COALESCE(u.lname,  u.lname, '')
+           COALESCE(u.lname, '')
          )) AS posted_by
   FROM products p
-  LEFT JOIN users u ON u.id = p.user_id   -- FK: products.user_id -> users.id
+  LEFT JOIN users u ON u.id = p.user_id
   ORDER BY p.id DESC
 ";
 $result = mysqli_query($conn, $sql);
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>

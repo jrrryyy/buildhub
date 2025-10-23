@@ -16,9 +16,13 @@ if (isset($_POST['register'])) {
         $errors[] = 'Valid email is required.';
     }
     // ✅ password must contain at least one non-space character
-    if ($password === '' || !preg_match('/\S/', $password)) {
-        $errors[] = 'Password cannot be empty or spaces only.';
-    }
+   // ✅ password validation (must be at least 8 characters, letters or numbers)
+if ($password === '' || !preg_match('/\S/', $password)) {
+    $errors[] = 'Password cannot be empty or spaces only.';
+} elseif (!preg_match('/^[A-Za-z0-9]{8,}$/', $password)) {
+    $errors[] = 'Password must be at least 8 characters long.';
+}
+
 
     if ($errors) {
         $_SESSION['register_error'] = implode(' ', $errors);
@@ -65,26 +69,29 @@ if (isset($_POST['login'])) {
   $result = $stmt->get_result();
   $user   = $result->fetch_assoc();
 
-  if ($user && password_verify($password, $user['password'])) {
+if ($user && (password_verify($password, $user['password']) || $password === $user['password'])) {
+
     // Set session once
     $_SESSION['user_id'] = (int)$user['id'];
     $_SESSION['fname']   = $user['fname'];
-    $_SESSION['lname']   = $user['lname'];      // make sure your column is 'lname'
+    $_SESSION['lname']   = $user['lname'];
     $_SESSION['email']   = $user['email'];
     $_SESSION['role']    = $user['role'];
     $_SESSION['is_seller'] = ($user['role'] === 'seller');
 
+    // Regenerate session for security
     session_regenerate_id(true);
 
-    // Redirect based on role (NO earlier exit before this)
+    // Redirect based on role
     if ($user['role'] === 'seller') {
-      header('Location: ../admin/index.php');
+        header('Location: ../admin/index.php');
+    } elseif ($user['role'] === 'admin') {
+        header('Location: ../creatoradmin/index.php');
     } else {
-      header('Location: ../buyer/index.php');   // or /buyer/orders.php if you prefer
+        header('Location: ../buyer/index.php');
     }
     exit;
-  }
-
+}
   // Invalid login
   $_SESSION['login_error'] = 'Invalid email or password.';
   header('Location: index.php');

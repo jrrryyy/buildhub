@@ -11,7 +11,21 @@ if ($sellerId <= 0) {
     header("Location: ../login/index.php");
     exit;
 }
+$userData = null;
+if ($conn && $sellerId > 0) {
+  $sql = "SELECT fname, lname, email, profile_picture FROM users WHERE id = ? LIMIT 1";
+  if ($stmt = mysqli_prepare($conn, $sql)) {
+    mysqli_stmt_bind_param($stmt, 'i', $sellerId);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+    $userData = $result->fetch_assoc();
+    mysqli_stmt_close($stmt);
+  }
+}
 
+// Default profile picture if none exists
+$profilePicture = $userData['profile_picture'] ?? null;
+$profilePicturePath = $profilePicture ? "../images/profiles/" . $profilePicture : null;
 /* Fetch this seller's items only (valid FK rows) */
 $sql = "
   SELECT
@@ -44,8 +58,11 @@ $flashError   = $_SESSION['crud_error']   ?? '';
 $flashSuccess = $_SESSION['crud_success'] ?? '';
 unset($_SESSION['crud_error'], $_SESSION['crud_success']);
 
+
 /* Send HTML only (no JSON here) */
 header('Content-Type: text/html; charset=utf-8');
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
