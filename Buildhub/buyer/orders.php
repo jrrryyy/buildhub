@@ -81,9 +81,11 @@ $result = mysqli_query($conn, $sql);
     <div class="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200 w-full max-w-sm mx-auto">
       <img
         src="../images/<?php echo $row['file']; ?>"
-        alt="Cement Bags"
-        class="w-full h-auto max-h-48 md:max-h-64 object-cover rounded-t-lg"
+        alt="<?php echo htmlspecialchars($row['product_name']); ?>"
+        class="w-full h-80 object-cover rounded-t-lg aspect-[4/3]"
+        style="object-position: center;"
       />
+
 
       <div class="p-4 md:p-6">
         <h3 class="text-base md:text-lg font-medium text-black mb-1">

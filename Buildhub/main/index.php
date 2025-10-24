@@ -66,7 +66,7 @@
         
         <!-- Hero Image -->
         <div class="flex-1 max-w-md">
-            <img src="../images/korina.png" alt="Stack of construction materials like cement bags on a pallet, representing logistics and supply chain" class="w-full h-auto rounded-2xl shadow-lg">
+            <img src="main_image.png" alt="Stack of construction materials like cement bags on a pallet, representing logistics and supply chain" class="w-full h-auto rounded-2xl shadow-lg">
         </div>
     </section>
 </body>

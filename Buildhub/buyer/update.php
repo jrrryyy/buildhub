@@ -57,29 +57,41 @@ if (isset($_POST['update_password'])) {
 /* =========================
    Update Personal Info
    ========================= */
+/* =========================
+   Update Personal Info
+   ========================= */
 if (isset($_POST['update_profile'])) {
-    // Trim inputs (don’t trim passwords, but here we only have names/emails)
     $current_email = trim($_POST['current_email'] ?? '');
-    $new_email     = trim($_POST['new_email'] ?? '');
-    $fname         = trim($_POST['fname'] ?? '');
-    $lname         = trim($_POST['lname'] ?? '');
+    $new_email     = $_POST['new_email'] ?? ''; // don't trim yet (check spaces)
+    $fname         = $_POST['fname'] ?? '';
+    $lname         = $_POST['lname'] ?? '';
     $session_email = $_SESSION['email'] ?? '';
 
-    // Field validation (block empty/whitespace-only)
     $errors = [];
+
+    // ✅ Must be logged in
     if ($session_email === '') $errors[] = 'Not logged in.';
-    if ($current_email === '' || !filter_var($current_email, FILTER_VALIDATE_EMAIL)) $errors[] = 'Current email is invalid.';
-    if ($new_email === '' || !filter_var($new_email, FILTER_VALIDATE_EMAIL)) $errors[] = 'New email is invalid.';
-    if ($fname === '' || !preg_match('/\S/', $fname)) $errors[] = 'First name is required.';
-    if ($lname === '' || !preg_match('/\S/', $lname)) $errors[] = 'Last name is required.';
+    if ($current_email === '' || !filter_var($current_email, FILTER_VALIDATE_EMAIL)) {
+        $errors[] = 'Current email is invalid.';
+    }
+
+    // ✅ Detect and block fields that are spaces-only
+    if ($fname !== '' && !preg_match('/\S/', $fname)) $errors[] = 'First name cannot be spaces only.';
+    if ($lname !== '' && !preg_match('/\S/', $lname)) $errors[] = 'Last name cannot be spaces only.';
+    if ($new_email !== '' && !preg_match('/\S/', $new_email)) $errors[] = 'New email cannot be spaces only.';
+
+    // ✅ Trim valid inputs after checking spaces-only
+    $fname = trim($fname);
+    $lname = trim($lname);
+    $new_email = trim($new_email);
 
     if ($errors) {
         $_SESSION['profile_error'] = implode(' ', $errors);
         header("Location: settings.php"); exit();
     }
 
-    // Fetch current user by session email
-    $stmt = $conn->prepare("SELECT email FROM users WHERE email = ? LIMIT 1");
+    // ✅ Fetch current user by session email
+    $stmt = $conn->prepare("SELECT fname, lname, email FROM users WHERE email = ? LIMIT 1");
     $stmt->bind_param('s', $session_email);
     $stmt->execute();
     $res  = $stmt->get_result();
@@ -91,10 +103,15 @@ if (isset($_POST['update_profile'])) {
         header("Location: settings.php"); exit();
     }
 
-    // If changing email, ensure new email isn't used by someone else
-    if (strcasecmp($new_email, $session_email) !== 0) {
+    // ✅ Keep old values for blank fields
+    $final_fname  = $fname !== '' ? $fname : $user['fname'];
+    $final_lname  = $lname !== '' ? $lname : $user['lname'];
+    $final_email  = $new_email !== '' ? $new_email : $user['email'];
+
+    // ✅ Check if new email is used by another user
+    if (strcasecmp($final_email, $user['email']) !== 0) {
         $chk = $conn->prepare("SELECT 1 FROM users WHERE email = ? LIMIT 1");
-        $chk->bind_param('s', $new_email);
+        $chk->bind_param('s', $final_email);
         $chk->execute();
         $chk->store_result();
         if ($chk->num_rows > 0) {
@@ -105,15 +122,15 @@ if (isset($_POST['update_profile'])) {
         $chk->close();
     }
 
-    // Perform update
+    // ✅ Perform update
     $upd = $conn->prepare("UPDATE users SET fname = ?, lname = ?, email = ? WHERE email = ?");
-    $upd->bind_param('ssss', $fname, $lname, $new_email, $session_email);
+    $upd->bind_param('ssss', $final_fname, $final_lname, $final_email, $session_email);
 
     if ($upd->execute()) {
-        // Refresh session values
-        $_SESSION['fname'] = $fname;
-        $_SESSION['lname'] = $lname;
-        $_SESSION['email'] = $new_email;
+        // ✅ Refresh session values
+        $_SESSION['fname'] = $final_fname;
+        $_SESSION['lname'] = $final_lname;
+        $_SESSION['email'] = $final_email;
         $_SESSION['profile_success'] = "Profile updated successfully.";
     } else {
         $_SESSION['profile_error'] = "Error updating profile.";
@@ -122,3 +139,4 @@ if (isset($_POST['update_profile'])) {
 
     header("Location: settings.php"); exit();
 }
+

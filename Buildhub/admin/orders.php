@@ -100,11 +100,13 @@ header('Content-Type: text/html; charset=utf-8');
   <?php else: ?>
     <?php foreach ($items as $row): ?>
       <div class="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200 w-full max-w-sm mx-auto h-full flex flex-col">
-        <img
+       <img
           src="<?='../images/'.h($row['file'],'placeholder.png')?>"
           alt="<?=h($row['product_name'],'Product')?>"
-          class="w-full h-48 sm:h-56 md:h-64 object-cover rounded-t-lg"
+          class="w-full h-60 object-cover rounded-t-lg aspect-[4/3]"
+          style="object-position: center;"
         />
+
 
         <div class="p-4 sm:p-6 flex flex-col flex-1">
           <h3 class="text-lg font-medium text-black mb-1 line-clamp-1"><?=h($row['product_name'],'—')?></h3>

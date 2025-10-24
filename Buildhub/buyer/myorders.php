@@ -197,6 +197,17 @@ $profilePicturePath = $profilePicture
   <title>My Orders Dashboard</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="../js/dropdown.js" defer></script>
+ <script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        fontFamily: {
+          sans: ['Inter', 'sans-serif'],
+        },
+      },
+    },
+  };
+</script>
 </head>
 <body class="bg-gray-50">
   <?php include '../nav/topbar_buyer.php'; ?>

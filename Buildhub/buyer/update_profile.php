@@ -28,58 +28,6 @@ if ($buyerId <= 0) {
 }
 
 // Handle profile picture upload
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['profile_picture'])) {
-  $file = $_FILES['profile_picture'];
-  
-  // Validate file
-  if ($file['error'] !== UPLOAD_ERR_OK) {
-    echo json_encode(['success' => false, 'message' => 'File upload error']);
-    exit;
-  }
-  
-  // Check file size (max 5MB)
-  if ($file['size'] > 5 * 1024 * 1024) {
-    echo json_encode(['success' => false, 'message' => 'File too large. Maximum size is 5MB.']);
-    exit;
-  }
-  
-  // Check file type
-  $allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
-  $finfo = finfo_open(FILEINFO_MIME_TYPE);
-  $mimeType = finfo_file($finfo, $file['tmp_name']);
-  finfo_close($finfo);
-  
-  if (!in_array($mimeType, $allowedTypes)) {
-    echo json_encode(['success' => false, 'message' => 'Invalid file type. Only JPEG, PNG, GIF, and WebP are allowed.']);
-    exit;
-  }
-  
-  // Create profiles directory if it doesn't exist
-  $uploadDir = '../images/profiles/';
-  if (!is_dir($uploadDir)) {
-    mkdir($uploadDir, 0755, true);
-  }
-  
-  // Generate unique filename
-  $extension = pathinfo($file['name'], PATHINFO_EXTENSION);
-  $filename = 'profile_' . $buyerId . '_' . time() . '.' . $extension;
-  $filepath = $uploadDir . $filename;
-  
-  // Move uploaded file
-  if (move_uploaded_file($file['tmp_name'], $filepath)) {
-    // Update database
-    $update = $conn->prepare("UPDATE users SET profile_picture = ? WHERE id = ?");
-    $update->bind_param('si', $filename, $buyerId);
-    $update->execute();
-    $update->close();
-    
-    echo json_encode(['success' => true, 'message' => 'Profile picture updated successfully']);
-  } else {
-    echo json_encode(['success' => false, 'message' => 'Failed to save file']);
-  }
-  exit;
-}
-
 // Handle profile information update
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_profile'])) {
   $fname = trim($_POST['fname'] ?? '');
@@ -98,7 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_profile'])) {
   if (!empty($newEmail) && $newEmail !== $currentEmail) {
     // Check if email already exists
     $checkEmail = $conn->prepare("SELECT id FROM users WHERE email = ? AND id != ?");
-    $checkEmail->bind_param('si', $newEmail, $buyerId);
+    $checkEmail->bind_param('si', $newEmail, $sellerId);
     $checkEmail->execute();
     $result = $checkEmail->get_result();
     $checkEmail->close();
@@ -111,24 +59,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_profile'])) {
     
     // Update with new email
     $update = $conn->prepare("UPDATE users SET fname = ?, lname = ?, email = ? WHERE id = ?");
-    $update->bind_param('sssi', $fname, $lname, $newEmail, $buyerId);
+    $update->bind_param('sssi', $fname, $lname, $newEmail, $sellerId);
     $update->execute();
     $update->close();
-    
-    // Update session email
+
+    // ✅ Update session with new info
+    $_SESSION['fname'] = $fname;
+    $_SESSION['lname'] = $lname;
     $_SESSION['email'] = $newEmail;
+
   } else {
     // Update without changing email
     $update = $conn->prepare("UPDATE users SET fname = ?, lname = ? WHERE id = ?");
-    $update->bind_param('ssi', $fname, $lname, $buyerId);
+    $update->bind_param('ssi', $fname, $lname, $sellerId);
     $update->execute();
     $update->close();
+
+    // ✅ Also update session with new names here
+    $_SESSION['fname'] = $fname;
+    $_SESSION['lname'] = $lname;
   }
   
   $_SESSION['profile_success'] = 'Profile updated successfully.';
   header('Location: profile.php');
   exit;
 }
+
 
 // Handle password update
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_password'])) {

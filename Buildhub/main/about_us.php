@@ -33,7 +33,7 @@
 <body class="bg-white text-gray-800 font-sans antialiased" id="about">
     <!-- Navigation Bar -->
     <nav class="flex justify-between items-center px-5 py-4 bg-white shadow-md sticky top-0 z-50">
-        <a href="#" class="logo text-lg">BuildHub</a>
+        <a href="../main/index.php" class="logo text-lg">BuildHub</a>
         <ul class="flex space-x-8 list-none">
             <li><a href="../main/index  .php#welcome" class="text-gray-800 hover:text-build-yellow font-medium transition-colors">Home</a></li>
             <li><a href="../main/how_it_work.php#get-started" class="text-gray-800 hover:text-build-yellow font-medium transition-colors">How It Works</a></li>
