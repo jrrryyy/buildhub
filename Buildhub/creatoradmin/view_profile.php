@@ -23,8 +23,10 @@ if (!$user) {
   exit;
 }
 
-$profilePicture = $user['profile_picture'] ?? 'default.png';
-$profilePicturePath = "../images/profiles/" . $profilePicture;
+$profilePicture = $userData['profile_picture'] ?? null;
+$profilePicturePath = $profilePicture
+  ? "../images/profiles/" . $profilePicture
+  : "../images/default-icon.png"; // fallback image
 ?>
 <!DOCTYPE html>
 <html lang="en">

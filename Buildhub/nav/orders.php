@@ -29,12 +29,13 @@ $result = mysqli_query($conn, $sql);
 </head>
 <body class="bg-white font-sans antialiased">
   <div class="flex flex-col md:flex-row min-h-screen">
+    <!-- Top Navbar -->
+    <?php include '../nav/topbar_buyer.php'; ?>
     <!-- Sidebar -->
     <?php include '../nav/sidebar_buyer.php'; ?>
     <!-- Main Content -->
     <main class="ml-16 md:ml-64 p-0 md:p-6 flex-1">
-        <!-- Top Navbar -->
-        <?php include '../nav/topbar_buyer.php'; ?>
+        
         <!-- Content -->
         <div class="p-6">
             <!-- Section Title -->

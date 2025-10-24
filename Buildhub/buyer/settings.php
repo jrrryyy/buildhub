@@ -24,9 +24,10 @@ if ($conn && $sellerId > 0) {
   }
 }
 
-// Prepare profile picture path
 $profilePicture = $userData['profile_picture'] ?? null;
-$profilePicturePath = $profilePicture ? "../images/profiles/" . $profilePicture : "../images/default-profile.png"; // fallback image
+$profilePicturePath = $profilePicture
+  ? "../images/profiles/" . $profilePicture
+  : "../images/default-icon.png"; // fallback image
 
 /* read flash, then clear just that key */
 $flash_success = $_SESSION['success'] ?? '';

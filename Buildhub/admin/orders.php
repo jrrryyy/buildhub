@@ -23,10 +23,11 @@ if ($conn && $sellerId > 0) {
   }
 }
 
-// Default profile picture if none exists
 $profilePicture = $userData['profile_picture'] ?? null;
-$profilePicturePath = $profilePicture ? "../images/profiles/" . $profilePicture : null;
-/* Fetch this seller's items only (valid FK rows) */
+$profilePicturePath = $profilePicture
+  ? "../images/profiles/" . $profilePicture
+  : "../images/default-icon.png"; // fallback image
+
 $sql = "
   SELECT
     oi.id, oi.order_id, oi.product_id, oi.product_name, oi.description,

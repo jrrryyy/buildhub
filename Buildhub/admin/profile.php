@@ -28,9 +28,10 @@ if ($conn && $sellerId > 0) {
   }
 }
 
-// Default profile picture if none exists
 $profilePicture = $userData['profile_picture'] ?? null;
-$profilePicturePath = $profilePicture ? "../images/profiles/" . $profilePicture : null;
+$profilePicturePath = $profilePicture
+  ? "../images/profiles/" . $profilePicture
+  : "../images/default-icon.png"; // fallback image
 ?>
 <!DOCTYPE html>
 <html lang="en">

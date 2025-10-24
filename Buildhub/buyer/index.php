@@ -144,7 +144,9 @@ if ($conn && $sellerId > 0) {
 }
 
 $profilePicture = $userData['profile_picture'] ?? null;
-$profilePicturePath = $profilePicture ? "../images/profiles/" . $profilePicture : null;
+$profilePicturePath = $profilePicture
+  ? "../images/profiles/" . $profilePicture
+  : "../images/default-icon.png"; // fallback image
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -167,14 +169,15 @@ $profilePicturePath = $profilePicture ? "../images/profiles/" . $profilePicture 
     </script>
 </head>
 <body class="bg-gray-50 font-sans">
+    <!-- Top Header -->
+            <?php include '../nav/topbar_buyer.php'; ?>
     <div class="flex h-screen bg-gray-50">
         <!-- Sidebar -->
         <?php include '../nav/sidebar_buyer.php'; ?>
         
         <!-- Main Content -->
         <div class="flex-1 ml-16 md:ml-64 p-6 overflow-auto">
-            <!-- Top Header -->
-            <?php include '../nav/topbar_buyer.php'; ?>
+            
 
             <!-- Welcome Message -->
             <div class="mb-6">

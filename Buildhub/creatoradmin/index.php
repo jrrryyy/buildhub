@@ -21,7 +21,9 @@ if ($conn && $sellerId > 0) {
 }
 
 $profilePicture = $userData['profile_picture'] ?? null;
-$profilePicturePath = $profilePicture ? "../images/profiles/" . $profilePicture : null;
+$profilePicturePath = $profilePicture
+  ? "../images/profiles/" . $profilePicture
+  : "../images/default-icon.png"; // fallback image
 
 $users = [];
 if ($conn) {
