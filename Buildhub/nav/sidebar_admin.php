@@ -1,7 +1,7 @@
 <aside class="bg-white border-r border-gray-200 w-16 md:w-64 flex flex-col transition-all duration-300 fixed top-0 left-0 h-screen z-[20] overflow-y-auto">
   <!-- Logo -->
   <a href="../creatoradmin/index.php" class="p-4 border-b border-gray-200 flex-shrink-0">
-    <div class="bg-yellow-400 text-black font-bold px-4 py-2 rounded-xl text-sm md:text-base hidden md:block">BuildHub</div>
+    <div class="bg-yellow-400 text-black font-bold px-4 py-4 rounded-xl text-sm md:text-2xl text-center hidden md:block">BuildHub</div>
   </a>
 
   <!-- Navigation Items -->

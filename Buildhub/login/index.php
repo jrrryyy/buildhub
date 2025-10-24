@@ -64,8 +64,8 @@ function displayError($msg) {
             <li><a href="../main/index.php#welcome" class="text-gray-800 hover:text-build-yellow font-medium transition-colors">Home</a></li>
             <li><a href="../main/how_it_work.php#get-started" class="text-gray-800 hover:text-build-yellow font-medium transition-colors">How It Works</a></li>
             <li><a href="../main/about_us.php#about" class="text-gray-800 hover:text-build-yellow font-medium transition-colors">About</a></li>
-            <li><a href="../login/index.php#create-account" class="text-gray-800 hover:text-build-yellow font-medium transition-colors">Sign In</a></li>
-            <li><a href="../login/register.php#create-account" class="text-build-yellow font-bold border-2 border-build-yellow px-4 py-2 rounded-full transition-colors">Create Account</a></li>
+            <li><a href="../login/index.php#create-account" class="text-build-yellow hover:text-build-yellow font-medium transition-colors">Sign In</a></li>
+            <li><a href="../login/register.php#create-account" class="text-gray-800 hover:text-build-yellow font-bold border-2 hover:border-build-yellow px-4 py-2 rounded-full transition-colors">Create Account</a></li>
         </ul>
     </nav>
 
@@ -136,7 +136,7 @@ function displayError($msg) {
         <!-- Right Section: Welcome Text -->
         <section class="flex-1 flex items-center justify-center p-8 md:p-12 bg-white border-l border-gray-100">
             <h1 id="welcome-text" class="text-4xl md:text-5xl font-bold text-gray-900 text-center">
-                Welcome back to<br>BuildHub
+                Welcome to<br>Build<font class="text-amber-500">Hub</font>
             </h1>
         </section>
     </main>

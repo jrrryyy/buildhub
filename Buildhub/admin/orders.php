@@ -82,13 +82,14 @@ header('Content-Type: text/html; charset=utf-8');
     };
   </script>
 </head>
-<body class="bg-white font-sans antialiased">
+<body class="bg-white font-sans antialiased"> 
+  <?php include '../nav/topbar_seller.php'; ?>
   <div class="flex flex-col md:flex-row min-h-screen">
     <!-- Sidebar -->
     <?php include '../nav/sidebar_seller.php'; ?>
     <!-- Main -->
     <main class="ml-16 md:ml-64 p-0 md:p-6 flex-1">
-      <?php include '../nav/topbar_seller.php'; ?>
+     
 
       <div class="p-6">
         <h2 class="text-2xl font-semibold text-black mb-6">Listings</h2>

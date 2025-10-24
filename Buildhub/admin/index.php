@@ -191,7 +191,8 @@ $profilePicturePath = $profilePicture
         };
     </script>
 </head>
-<body class="bg-gray-50 font-sans">
+<body class="bg-gray-50 font-sans"> 
+    <?php include '../nav/topbar_seller.php'; ?>
     <div class="flex h-screen bg-gray-50">
         <!-- Sidebar -->
         <?php include '../nav/sidebar_seller.php'; ?>
@@ -199,7 +200,7 @@ $profilePicturePath = $profilePicture
         <!-- Main Content -->
         <div class="flex-1 ml-16 md:ml-64 p-6 overflow-auto">
             <!-- Top Header -->
-            <?php include '../nav/topbar_seller.php'; ?>
+           
 
             <!-- Welcome Message -->
             <div class="mb-6">

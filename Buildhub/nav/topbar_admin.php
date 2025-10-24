@@ -1,4 +1,4 @@
-<div class="top-0 z-[10] bg-white border-b border-gray-200 px-6 py-4 flex justify-end items-center transition-all duration-300 lg:ml-640">
+<div class="top-0 z-[10] bg-white border-b border-gray-200 px-6 py-1 flex justify-end items-center transition-all duration-300 lg:ml-640">
 
   <div class="relative">
       <h1 class="text-gray-500 text-xs md:text-sm font-semibold px-4 mt-4 mb-2 hidden md:block">Admin</h1>

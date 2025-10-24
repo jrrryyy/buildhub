@@ -36,10 +36,10 @@
         <a href="#" class="logo text-lg">BuildHub</a>
         <ul class="flex space-x-8 list-none">
             <li><a href="../main/index.php#welcome" class="text-gray-800 hover:text-build-yellow font-medium transition-colors">Home</a></li>
-            <li><a href="../main/how_it_work.php#get-started" class="text-gray-800 hover:text-build-yellow font-medium transition-colors">How It Works</a></li>
+            <li><a href="../main/how_it_work.php#get-started" class="text-build-yellow hover:text-build-yellow font-medium transition-colors">How It Works</a></li>
             <li><a href="../main/about_us.php#about" class="text-gray-800 hover:text-build-yellow font-medium transition-colors">About</a></li>
             <li><a href="../login/index.php#create-account" class="text-gray-800 hover:text-build-yellow font-medium transition-colors">Sign In</a></li>
-            <li><a href="../login/register.php#create-account" class="text-build-yellow font-bold border-2 border-build-yellow px-4 py-2 rounded-full transition-colors">Create Account</a></li>
+            <li><a href="../login/register.php#create-account" class="text-gray-800 hover:text-build-yellow font-bold border-2 hover:border-build-yellow px-4 py-2 rounded-full transition-colors">Create Account</a></li>
         </ul>
     </nav>
 
