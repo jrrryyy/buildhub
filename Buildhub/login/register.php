@@ -105,7 +105,7 @@ unset($_SESSION['register_error']);
   </div>
 
   <div>
-    <input data-sync="last_name" id="last-name" type="text" placeholder="Last Name" autocomplete="off" readonly
+    <input data-sync="last_name" id="last-name" type="text" placeholder="Last Name (Optional)" autocomplete="off" readonly
            class="w-full px-4 py-3 bg-yellow-50 border border-yellow-200 rounded-md text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
   </div>
 

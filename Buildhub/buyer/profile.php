@@ -126,7 +126,14 @@ $profilePicturePath = $profilePicture
                             ?>
                         </div>
                     <?php endif; ?>
-
+                    <?php if (isset($_SESSION['password_success']) || isset($_SESSION['password_error'])): ?>
+                        <div class="w-full bg-yellow-300 text-black font-medium p-3 mb-5 rounded-lg text-center">
+                            <?php 
+                                if (isset($_SESSION['password_success'])) { echo h($_SESSION['password_success']); unset($_SESSION['password_success']); }
+                                elseif (isset($_SESSION['password_error'])) { echo h($_SESSION['password_error']); unset($_SESSION['password_error']); }
+                            ?>
+                        </div>
+                    <?php endif; ?>
                     <h2 class="text-xl font-semibold text-black mb-2">Profile Information</h2>
                     <p class="text-gray-600 mb-6">Update your personal information</p>
 
@@ -165,15 +172,6 @@ $profilePicturePath = $profilePicture
 
                 <!-- Account Settings Section -->
                 <form id="pwForm" method="POST" action="update_profile.php" autocomplete="off" class="bg-white rounded-lg shadow-sm p-6">
-                    <?php if (isset($_SESSION['password_success']) || isset($_SESSION['password_error'])): ?>
-                        <div class="w-full bg-yellow-300 text-black font-medium p-3 mb-5 rounded-lg text-center">
-                            <?php 
-                                if (isset($_SESSION['password_success'])) { echo h($_SESSION['password_success']); unset($_SESSION['password_success']); }
-                                elseif (isset($_SESSION['password_error'])) { echo h($_SESSION['password_error']); unset($_SESSION['password_error']); }
-                            ?>
-                        </div>
-                    <?php endif; ?>
-
                     <h2 class="text-xl font-semibold text-black mb-2">Account Settings</h2>
                     <p class="text-gray-600 mb-6">Manage your account security</p>
 

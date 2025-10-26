@@ -10,8 +10,16 @@ if (isset($_POST['register'])) {
     $role     = trim($_POST['role']       ?? '');
 
     $errors = [];
-    if ($fname === '') $errors[] = 'First name is required.';
-    if ($lname === '') $errors[] = 'Last name is required.';
+    // ✅ First name required (not empty or spaces only)
+if ($fname === '' || !preg_match('/\S/', $fname)) {
+    $errors[] = 'First name is required.';
+}
+
+// ✅ Last name optional, but cannot be spaces only
+if ($lname !== '' && !preg_match('/\S/', $lname)) {
+    $errors[] = 'Last name cannot contain spaces only.';
+}
+
     if ($email === '' || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $errors[] = 'Valid email is required.';
     }
