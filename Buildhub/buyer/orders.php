@@ -2,7 +2,7 @@
 session_start();
 $conn = mysqli_connect("localhost", "root", "", "user_db");
 
-// ✅ Define sellerId from session (fixes 'undefined variable' and missing profile)
+// ✅ Define sellerId from session (fixes ' variable' and missing profile)
 $sellerId = $_SESSION['user_id'] ?? 0;
 
 $userData = null;
@@ -76,9 +76,9 @@ $result = mysqli_query($conn, $sql);
             <h2 class="text-2xl font-semibold text-black mb-6">Browse</h2>
 
             <!-- Product Cards Grid -->
-<div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
   <?php while($row = mysqli_fetch_assoc($result)) { ?>
-    <div class="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200 w-full max-w-sm mx-auto">
+    <div class="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200 w-full">
       <img
         src="../images/<?php echo $row['file']; ?>"
         alt="<?php echo htmlspecialchars($row['product_name']); ?>"
