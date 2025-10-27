@@ -58,7 +58,7 @@
             </div>
             <div class="flex justify-between gap-8 flex-wrap">
                 <!-- Step 1 -->
-                <div class="flex-1 min-w-[250px] bg-white border-2 border-gray-100 rounded-2xl p-8 text-center shadow-sm hover:shadow-md transition-all hover:-translate-y-2">
+                <div class="flex-1 min-w-[250px] bg-white border-2 border-yellow-400 rounded-2xl p-8 text-center shadow-sm hover:shadow-md transition-all hover:-translate-y-2">
                     <div class="w-12 h-12 bg-build-yellow text-gray-800 rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-4">
                         1
                     </div>
@@ -70,7 +70,7 @@
                     </p>
                 </div>
                 <!-- Step 2 -->
-                <div class="flex-1 min-w-[250px] bg-white border-2 border-gray-100 rounded-2xl p-8 text-center shadow-sm hover:shadow-md transition-all hover:-translate-y-2">
+                <div class="flex-1 min-w-[250px] bg-white border-2 border-yellow-400 rounded-2xl p-8 text-center shadow-sm hover:shadow-md transition-all hover:-translate-y-2">
                     <div class="w-12 h-12 bg-build-yellow text-gray-800 rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-4">
                         2
                     </div>
@@ -82,7 +82,7 @@
                     </p>
                 </div>
                 <!-- Step 3 -->
-                <div class="flex-1 min-w-[250px] bg-white border-2 border-gray-100 rounded-2xl p-8 text-center shadow-sm hover:shadow-md transition-all hover:-translate-y-2">
+                <div class="flex-1 min-w-[250px] bg-white border-2 border-yellow-400 rounded-2xl p-8 text-center shadow-sm hover:shadow-md transition-all hover:-translate-y-2">
                     <div class="w-12 h-12 bg-build-yellow text-gray-800 rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-4">
                         3
                     </div>
@@ -106,7 +106,7 @@
             </p>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <!-- Feature 1 -->
-                <div class="bg-white rounded-2xl p-8 text-center shadow-sm hover:shadow-md transition-all hover:-translate-y-2">
+                <div class="bg-white rounded-2xl p-8 border-2 border-yellow-400 text-center shadow-sm hover:shadow-md transition-all hover:-translate-y-2">
                     <div class="text-5xl text-build-yellow mb-4">
                         📅
                     </div>
@@ -118,7 +118,7 @@
                     </p>
                 </div>
                 <!-- Feature 2 -->
-                <div class="bg-white rounded-2xl p-8 text-center shadow-sm hover:shadow-md transition-all hover:-translate-y-2">
+                <div class="bg-white rounded-2xl p-8 border-2 border-yellow-400 text-center shadow-sm hover:shadow-md transition-all hover:-translate-y-2">
                     <div class="text-5xl text-build-yellow mb-4">
                         💳
                     </div>
@@ -130,7 +130,7 @@
                     </p>
                 </div>
                 <!-- Feature 3 -->
-                <div class="bg-white rounded-2xl p-8 text-center shadow-sm hover:shadow-md transition-all hover:-translate-y-2">
+                <div class="bg-white rounded-2xl p-8 border-2 border-yellow-400 text-center shadow-sm hover:shadow-md transition-all hover:-translate-y-2">
                     <div class="text-5xl text-build-yellow mb-4">
                         📊
                     </div>

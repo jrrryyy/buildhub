@@ -18,7 +18,7 @@ unset($_SESSION['register_error']);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BuildHub - Construction Project Management</title>
+    <title>BuildHub - Create Account</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="../js/remove_autofill.js" defer></script>
 </head>

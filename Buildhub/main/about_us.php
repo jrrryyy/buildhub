@@ -62,7 +62,7 @@
             </h3>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <!-- Value 1: User Satisfaction -->
-                <div class="bg-white border-2 border-gray-100 rounded-2xl p-8 text-center shadow-sm hover:shadow-md transition-all hover:-translate-y-2">
+                <div class="bg-white border-2 border-yellow-400 rounded-2xl p-8 text-center shadow-sm hover:shadow-md transition-all hover:-translate-y-2">
                     <div class="text-5xl text-build-yellow mb-4">
                         😊
                     </div>
@@ -74,7 +74,7 @@
                     </p>
                 </div>
                 <!-- Value 2: Community Driven -->
-                <div class="bg-white border-2 border-gray-100 rounded-2xl p-8 text-center shadow-sm hover:shadow-md transition-all hover:-translate-y-2">
+                <div class="bg-white border-2 border-yellow-400 rounded-2xl p-8 text-center shadow-sm hover:shadow-md transition-all hover:-translate-y-2">
                     <div class="text-5xl text-build-yellow mb-4">
                         👥
                     </div>
@@ -86,7 +86,7 @@
                     </p>
                 </div>
                 <!-- Value 3: Efficient -->
-                <div class="bg-white border-2 border-gray-100 rounded-2xl p-8 text-center shadow-sm hover:shadow-md transition-all hover:-translate-y-2">
+                <div class="bg-white border-2 border-yellow-400 rounded-2xl p-8 text-center shadow-sm hover:shadow-md transition-all hover:-translate-y-2">
                     <div class="text-5xl text-build-yellow mb-4">
                         ⚡
                     </div>
