@@ -140,5 +140,6 @@ function displayError($msg) {
             </h1>
         </section>
     </main>
+    <?php include '../nav/footer.php'; ?>
 </body>
 </html>

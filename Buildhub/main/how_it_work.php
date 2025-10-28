@@ -63,10 +63,10 @@
                         1
                     </div>
                     <h3 class="text-xl font-bold text-gray-800 mb-2">
-                        Post Your Order
+                        Browse
                     </h3>
                     <p class="text-gray-600">
-                        Place a detailed order with the materials you need.
+                        Explore available materials, compare prices, and find what you need.
                     </p>
                 </div>
                 <!-- Step 2 -->
@@ -75,10 +75,10 @@
                         2
                     </div>
                     <h3 class="text-xl font-bold text-gray-800 mb-2">
-                        Get Matched
+                       Book
                     </h3>
                     <p class="text-gray-600">
-                        Receive offers and get matched by sellers.
+                        Reserve your chosen materials with a quick and secure booking.
                     </p>
                 </div>
                 <!-- Step 3 -->
@@ -87,10 +87,10 @@
                         3
                     </div>
                     <h3 class="text-xl font-bold text-gray-800 mb-2">
-                        Complete & Review
+                       Receive
                     </h3>
                     <p class="text-gray-600">
-                        Materials are delivered, then mark as complete and review.
+                        Get your materials delivered on time, ready for your project.
                     </p>
                 </div>
             </div>
@@ -157,5 +157,6 @@
             </a>
         </div>
     </section>
+    <?php include '../nav/footer.php'; ?>
 </body>
 </html>

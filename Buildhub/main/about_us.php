@@ -110,5 +110,6 @@
             </p>
         </div>
     </section>
+    <?php include '../nav/footer.php'; ?>
 </body>
 </html>

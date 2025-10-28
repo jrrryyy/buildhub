@@ -70,5 +70,6 @@
             <img src="main_image.png" alt="Stack of construction materials like cement bags on a pallet, representing logistics and supply chain" class="w-full h-auto rounded-2xl shadow-lg">
         </div>
     </section>
+    <?php include '../nav/footer.php'; ?>
 </body>
 </html>

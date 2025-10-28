@@ -139,5 +139,6 @@ unset($_SESSION['register_error']);
             </div>
         </section>
     </main>
+    <?php include '../nav/footer.php'; ?>
 </body>
 </html>
