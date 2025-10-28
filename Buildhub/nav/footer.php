@@ -23,21 +23,27 @@
     <div>
       <h3 class="font-semibold text-gray-900 mb-3">Support</h3>
       <ul class="space-y-2 text-sm">
-        <li><a href="#" class="hover:text-yellow-500 transition">Privacy Policy</a></li>
-        <li><a href="#" class="hover:text-yellow-500 transition">Terms of Service</a></li>
+        <li><button onclick="showSupportInfo()" class="hover:text-yellow-500 transition">Privacy Policy</a></li>
+        <li><button onclick="showSupportInfo()" class="hover:text-yellow-500 transition">Terms of Service</a></li>
       </ul>
     </div>
 
     <!-- Contact Info -->
     <div>
-      <h3 class="font-semibold text-gray-900 mb-3">Contact</h3>
-      <p class="text-sm text-gray-600">📧 support@buildhub.com</p>
-      <p class="text-sm text-gray-600">📍 Manila, Philippines</p>
-      <div class="flex space-x-4 mt-3">
-        <a href="#" class="hover:text-yellow-500 transition">🌐</a>
-        <a href="#" class="hover:text-yellow-500 transition">📘</a>
-        <a href="#" class="hover:text-yellow-500 transition">🐦</a>
-      </div>
+        <h3 class="font-semibold text-gray-900 mb-3">Contact</h3>
+            <p class="text-sm text-gray-600">📧 support@buildhub.com</p>
+            <p class="text-sm text-gray-600">📍 Pangasinan, Philippines</p>
+    <div class="flex space-x-4 mt-3">
+        <a href="https://github.com/jhngnz" class="hover:opacity-80 transition">
+            <img src="../main/social.png" alt="GitHub" class="w-6 h-6 md:w-7 md:h-7">
+        </a>
+        <a href="https://github.com/ken-estayo" class="hover:opacity-80 transition">
+            <img src="../main/social.png" alt="GitHub" class="w-6 h-6 md:w-7 md:h-7">
+        </a>
+        <a href="https://github.com/jrrryyy" class="hover:opacity-80 transition">
+            <img src="../main/social.png" alt="GitHub" class="w-6 h-6 md:w-7 md:h-7">
+        </a>
+    </div>
     </div>
   </div>
 
