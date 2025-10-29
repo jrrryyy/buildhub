@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 23, 2025 at 02:01 PM
+-- Generation Time: Oct 29, 2025 at 10:14 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -48,22 +48,9 @@ CREATE TABLE `orders` (
 --
 
 INSERT INTO `orders` (`id`, `buyer_id`, `supplier_id`, `recipient_name`, `address_line`, `province`, `phone`, `schedule_date`, `product_name`, `total_amount`, `ordered_at`, `status`, `updated_at`) VALUES
-(35, 73, 74, 'johann', '#221 Boulivard st.', 'pangasinan', '09484694167', '2025-10-29', 'cement', 300, '2025-10-23 19:58:00', 'pending', '2025-10-23 19:59:15');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `order_reschedules`
---
-
-CREATE TABLE `order_reschedules` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `requested_by` enum('buyer','supplier') NOT NULL,
-  `proposed_scheduled_at` datetime NOT NULL,
-  `status` enum('pending','accepted','declined') NOT NULL DEFAULT 'pending',
-  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
-  `updated_at` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+(35, 73, 74, 'johann', '#221 Boulivard st.', 'pangasinan', '09484694167', '2025-10-29', 'cement', 300, '2025-10-23 19:58:00', 'cancelled', '2025-10-27 12:53:09'),
+(36, 73, 74, 'Red', '123 Street, Mangaldan', 'Pangasinan', '09999123456', '2025-10-30', 'Mahogany Wood', 830, '2025-10-27 14:08:22', 'cancelled', '2025-10-27 14:09:14'),
+(37, 73, 74, 'Red', '123 Street, Mangaldan', 'Pangasinan', '09999123456', '2025-11-13', 'Gravel Bato', 450, '2025-10-27 14:08:59', 'accepted', '2025-10-27 14:09:19');
 
 -- --------------------------------------------------------
 
@@ -91,7 +78,13 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`id`, `user_id`, `order_id`, `product_id`, `product_name`, `description`, `unit_price`, `quantity`, `file`, `line_total`, `created_at`, `updated_at`) VALUES
-(51, 74, 0, 0, 'cement', 'good quality', 250, 100, '20251023_120011_ef2de7f8.jpg', 25000, '2025-10-23 18:00:11', '2025-10-23 18:00:11');
+(51, 74, 0, 0, 'cement', 'good quality', 250, 100, '20251023_120011_ef2de7f8.jpg', 25000, '2025-10-23 18:00:11', '2025-10-23 18:00:11'),
+(52, 74, 0, 0, 'Hollow Blocks', 'hollow blocks per piece', 4, 999, '20251027_064738_f6066a01.webp', 3996, '2025-10-27 13:47:38', '2025-10-27 13:47:38'),
+(53, 74, 0, 0, 'Galvanized Square Steel', '1.5 Meter length, thin tube', 100, 666, '20251027_065141_903a355d.jpg', 66600, '2025-10-27 13:51:41', '2025-10-27 13:51:41'),
+(54, 74, 0, 0, 'Concrete Nails', '1 Kilo per order', 105, 999, '20251027_065608_3f5bf2c7.jpg', 104895, '2025-10-27 13:56:09', '2025-10-27 13:56:09'),
+(55, 74, 0, 0, 'Red Bricks', 'sold per brick', 25, 99999, '20251027_065800_11200184.jpg', 2499975, '2025-10-27 13:58:00', '2025-10-27 13:58:00'),
+(56, 74, 0, 0, 'Gravel Bato', 'sold per kilo', 20, 99999, '20251027_070010_2b96a4de.webp', 1999980, '2025-10-27 14:00:10', '2025-10-27 14:00:10'),
+(57, 74, 0, 0, 'Mahogany Wood', '1-500bd.ft.', 195, 999999, '20251027_070309_547b57ad.jpg', 194999805, '2025-10-27 14:03:09', '2025-10-27 14:03:09');
 
 -- --------------------------------------------------------
 
@@ -152,13 +145,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
 
 --
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
 
 --
 -- AUTO_INCREMENT for table `users`
