@@ -14,7 +14,13 @@ Features:
 - Pay onsite
 - Calendar Management
 ----------------------------
-* Developers: (Names of developers)
+### Credentials: 
+- Jed Roven B. Yulo
+- Johann Dominic P. Gonzales
+- Ken Joseph L. Estayo
+- Janus A. Moyano
+- Tyrone Lex M. Chan
+----------------------------
 * Date: 09/30/2025
 * University: Phinma Education - University of Pangasinan
 * School: College of Information Technology Education (CITE)
